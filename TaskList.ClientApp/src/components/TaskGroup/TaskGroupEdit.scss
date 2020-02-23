@@ -1,0 +1,29 @@
+.task-group-edit {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        >form {
+            display: flex;
+        }
+
+        &__name-input {
+            flex: 1 1 100%;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex: 1 1 auto;
+
+        &__left-column {
+            flex: 0 0 25%;
+        }
+
+        &__right-column {
+            flex: 1 1 auto;
+            display: flex;
+            padding: 5px;
+        }
+    }
+}

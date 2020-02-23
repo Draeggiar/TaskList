@@ -6,10 +6,10 @@ namespace TaskList.Data.Logic.UserTask
 {
     public interface IUserTaskDbManager
     {
-        List<UserTaskViewModel> Get();
-        UserTaskViewModel Get(int id);
-        UserTaskEntity Create(UserTaskViewModel taskViewModel);
-        void Update(int id, UserTaskViewModel taskViewModel);
-        void Remove(int id);
+        List<UserTaskDetailsViewModel> Get();
+        UserTaskDetailsViewModel Get(int id);
+        UserTaskEntity Create(UserTaskDetailsViewModel taskDetailsViewModel);
+        bool Update(int id, UserTaskDetailsViewModel taskDetailsViewModel);
+        bool Remove(int id);
     }
 }

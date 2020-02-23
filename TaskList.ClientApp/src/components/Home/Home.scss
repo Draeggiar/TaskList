@@ -1,0 +1,14 @@
+.home {
+    &__content {
+        display: flex;
+        flex-direction: column;
+
+        &__groups {
+            display: flex;
+        }
+
+        &__add-new-button {
+            align-self: center;
+        }
+    }
+}

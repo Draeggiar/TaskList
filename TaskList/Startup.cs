@@ -1,12 +1,13 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskList.Data;
-using AutoMapper;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using System;
 using TaskList.Data.Extensions;
+using TaskList.Data.Models;
 
 namespace TaskList
 {
@@ -22,7 +23,7 @@ namespace TaskList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataBase();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()), AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers();
             services.AddSpaStaticFiles(configuration =>
@@ -57,8 +58,8 @@ namespace TaskList
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
         }

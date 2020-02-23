@@ -12,8 +12,8 @@ namespace TaskList.Data.Models.DbEntities
         public int UserId { get; set; }
         public int TaskStatus { get; set; }
 
-        [ForeignKey("Group")]
         public int GroupId { get; set; }
-        public TaskGroupEntity Group { get; set; }
+        [ForeignKey("GroupId")]
+        public virtual TaskGroupEntity Group { get; set; }
     }
 }

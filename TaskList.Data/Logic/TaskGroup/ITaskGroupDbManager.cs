@@ -9,7 +9,7 @@ namespace TaskList.Data.Logic.TaskGroup
         List<TaskGroupViewModel> Get();
         TaskGroupViewModel Get(int id);
         TaskGroupEntity Create(TaskGroupViewModel task);
-        void Update(int id, TaskGroupViewModel task);
-        void Remove(int id);
+        bool Update(int id, TaskGroupViewModel task);
+        bool Remove(int id);
     }
 }

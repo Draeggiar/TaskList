@@ -1,0 +1,10 @@
+.task-group-tile {
+    display: flex;
+    flex: 0 1 auto;
+    padding: 5px;
+    flex-direction: column;
+    border: 1px solid grey;
+    background-color: whitesmoke;
+    align-items: center;
+    cursor: pointer;
+}

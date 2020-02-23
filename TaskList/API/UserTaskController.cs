@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using TaskList.Data.Logic.UserTask;
 using TaskList.Data.Models.ViewModels;
 
@@ -17,10 +18,10 @@ namespace TaskList.API
         }
 
         [HttpGet]
-        public ActionResult<List<UserTaskViewModel>> Get() => _userTaskDbManager.Get();
+        public ActionResult<List<UserTaskDetailsViewModel>> Get() => _userTaskDbManager.Get();
 
         [HttpGet("{id}")]
-        public ActionResult<UserTaskViewModel> Get(int id)
+        public ActionResult<UserTaskDetailsViewModel> Get(int id)
         {
             var task = _userTaskDbManager.Get(id);
             if (task == null)
@@ -29,30 +30,36 @@ namespace TaskList.API
         }
 
         [HttpPost]
-        public ActionResult<UserTaskViewModel> Create(UserTaskViewModel taskViewModel)
+        public ActionResult<UserTaskDetailsViewModel> Create(UserTaskDetailsViewModel taskDetailsViewModel)
         {
-            var newTask = _userTaskDbManager.Create(taskViewModel);
-            return CreatedAtRoute("GetUserTask", new { id = newTask.Id }, taskViewModel);
+            var newTask = _userTaskDbManager.Create(taskDetailsViewModel);
+            return CreatedAtAction(nameof(Get), new { id = newTask.Id }, taskDetailsViewModel);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, UserTaskViewModel taskViewModel)
+        public IActionResult Update(int id, UserTaskDetailsViewModel taskDetailsViewModel)
         {
-            if (_userTaskDbManager.Get(id) == null)
-                return NotFound();
-
-            _userTaskDbManager.Update(id, taskViewModel);
-            return NoContent();
+            if (_userTaskDbManager.Update(id, taskDetailsViewModel))
+                return NoContent();
+            return NotFound();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_userTaskDbManager.Get(id) == null)
-                return NotFound();
+            if (_userTaskDbManager.Remove(id))
+                return NoContent();
+            return NotFound();
+        }
 
-            _userTaskDbManager.Remove(id);
-            return NoContent();
+        [HttpGet("group/{groupId}")]
+        public ActionResult<List<SimpleUserTaskViewModel>> GetAllTaskInGroup(int groupId)
+        {
+            var tasks = _userTaskDbManager.Get()?.Where(t => t.GroupId == groupId)
+                .Select(t => t as SimpleUserTaskViewModel);
+            if (tasks == null)
+                return NotFound();
+            return tasks.ToList();
         }
     }
 }

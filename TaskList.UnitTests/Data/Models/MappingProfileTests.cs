@@ -1,6 +1,8 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TaskList.Data.Enums;
 using TaskList.Data.Models;
 using TaskList.Data.Models.DbEntities;
@@ -37,20 +39,22 @@ namespace TaskList.UnitTests.Data.Models
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = 1,
-                UserId = 1
+                UserId = 1,
+                GroupId = 1
             };
-            var expected = new UserTaskViewModel
+            var expected = new UserTaskDetailsViewModel
             {
                 Deadline = new DateTime(2003, 2, 1),
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = TaskStatus.InProgress,
-                UserId = 1
+                UserId = 1,
+                GroupId = 1
             };
 
-            var result = _mapperConfig.CreateMapper().Map<UserTaskViewModel>(userTaskEntity);
+            var result = _mapperConfig.CreateMapper().Map<UserTaskDetailsViewModel>(userTaskEntity);
 
-            Assert.IsInstanceOf<UserTaskViewModel>(result);
+            Assert.IsInstanceOf<UserTaskDetailsViewModel>(result);
             Assert.AreEqual(expected.Name, result.Name);
             Assert.AreEqual(expected.UserId, result.UserId);
             Assert.AreEqual(expected.Id, result.Id);
@@ -61,13 +65,14 @@ namespace TaskList.UnitTests.Data.Models
         [Test]
         public void Mapper_ShouldCorrectlyMap_UserTaskViewModelToUserTaskEntity()
         {
-            var userTaskViewModel = new UserTaskViewModel
+            var userTaskViewModel = new UserTaskDetailsViewModel
             {
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = TaskStatus.InProgress,
                 UserId = 1,
-                Deadline = new DateTime(2003, 2, 1)
+                Deadline = new DateTime(2003, 2, 1),
+                GroupId = 1
             };
             var expected = new UserTaskEntity
             {
@@ -75,7 +80,8 @@ namespace TaskList.UnitTests.Data.Models
                 Name = "TestTask",
                 TaskStatus = 1,
                 UserId = 1,
-                Deadline = "01.02.2003 00:00:00"
+                Deadline = "01.02.2003 00:00:00",
+                GroupId = 1
             };
 
             var result = _mapperConfig.CreateMapper().Map<UserTaskEntity>(userTaskViewModel);
@@ -95,7 +101,7 @@ namespace TaskList.UnitTests.Data.Models
             {
                 Id = 1,
                 Name = "TestTaskGroup",
-                UserTasks = new[] { new UserTaskEntity { Id = 1 }, new UserTaskEntity { Id = 2 } }
+                UserTasks = new List<UserTaskEntity> { new UserTaskEntity { Id = 1, Name = "TestTask1" }, new UserTaskEntity { Id = 2, Name = "TestTask2" } }
             };
             var expected = new TaskGroupViewModel
             {
@@ -109,7 +115,7 @@ namespace TaskList.UnitTests.Data.Models
             Assert.IsInstanceOf<TaskGroupViewModel>(result);
             Assert.AreEqual(expected.Id, result.Id);
             Assert.AreEqual(expected.Name, result.Name);
-            CollectionAssert.AreEqual(expected.UserTasks, result.UserTasks);
+            CollectionAssert.AreEquivalent(expected.UserTasks, result.UserTasks);
         }
 
         [Test]
@@ -117,10 +123,12 @@ namespace TaskList.UnitTests.Data.Models
         {
             var taskGroupViewModel = new TaskGroupViewModel
             {
+                Id = 1,
                 Name = "TestTaskGroup",
             };
             var expected = new TaskGroupEntity
             {
+                Id = 1,
                 Name = "TestTaskGroup",
             };
 

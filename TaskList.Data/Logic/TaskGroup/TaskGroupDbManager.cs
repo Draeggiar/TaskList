@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TaskList.Data.Models.DbEntities;
 using TaskList.Data.Models.ViewModels;
 
@@ -22,6 +23,7 @@ namespace TaskList.Data.Logic.TaskGroup
         public List<TaskGroupViewModel> Get()
         {
             return _dbContext.TaskGroups
+                .Include(g => g.UserTasks)
                 .Select(g => _mapper.Map<TaskGroupViewModel>(g))
                 .ToList();
         }
@@ -29,30 +31,40 @@ namespace TaskList.Data.Logic.TaskGroup
         [return: MaybeNull]
         public TaskGroupViewModel Get(int id)
         {
-            var groupFromDb = _dbContext.TaskGroups.Find(id);
-            return groupFromDb == null ? null : _mapper.Map<TaskGroupViewModel>(groupFromDb);
+            return !TryFindGroupInDb(id, out var groupFromDb) ? null : _mapper.Map<TaskGroupViewModel>(groupFromDb);
         }
 
         public TaskGroupEntity Create(TaskGroupViewModel group)
         {
-            var newGroup = _dbContext.TaskGroups.Add(_mapper.Map<TaskGroupEntity>(group));
+            var newGroup = _mapper.Map<TaskGroupEntity>(group);
+            newGroup = _dbContext.TaskGroups.Add(newGroup).Entity;
+            
             _dbContext.SaveChanges();
-            return newGroup.Entity;
+            return newGroup;
         }
 
-        public void Update(int id, TaskGroupViewModel group)
+        public bool Update(int id, TaskGroupViewModel group)
         {
-            var updatedGroup = _mapper.Map<TaskGroupEntity>(group);
-            updatedGroup.Id = id;
-            _dbContext.TaskGroups.Update(updatedGroup);
-            _dbContext.SaveChanges();
+            if (!TryFindGroupInDb(id, out var groupFromDb)) return false;
+
+            var updatedGroup = _mapper.Map<UserTaskEntity>(group);
+            _dbContext.Entry(groupFromDb).CurrentValues.SetValues(updatedGroup);
+            return true;
         }
 
-        public void Remove(int id)
+        public bool Remove(int id)
         {
-            var groupFromDb = _dbContext.TaskGroups.Find(id);
+            if (!TryFindGroupInDb(id, out var groupFromDb)) return false;
+
             _dbContext.TaskGroups.Remove(groupFromDb);
             _dbContext.SaveChanges();
+            return true;
+        }
+
+        private bool TryFindGroupInDb(int id, out TaskGroupEntity groupFromDb)
+        {
+            groupFromDb = _dbContext.TaskGroups.Find(id);
+            return groupFromDb != null;
         }
     }
 }

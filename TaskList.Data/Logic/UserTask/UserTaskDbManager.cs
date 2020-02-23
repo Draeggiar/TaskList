@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TaskList.Data.Models.DbEntities;
 using TaskList.Data.Models.ViewModels;
 
@@ -18,40 +19,51 @@ namespace TaskList.Data.Logic.UserTask
             _mapper = mapper;
         }
 
-        public List<UserTaskViewModel> Get()
+        public List<UserTaskDetailsViewModel> Get()
         {
             return _dbContext.UserTasks
-                .Select(t => _mapper.Map<UserTaskViewModel>(t))
+                .Select(t => _mapper.Map<UserTaskDetailsViewModel>(t))
                 .ToList();
         }
 
         [return: MaybeNull]
-        public UserTaskViewModel Get(int id)
+        public UserTaskDetailsViewModel Get(int id)
         {
-            var taskFromDb = _dbContext.UserTasks.Find(id);
-            return taskFromDb == null ? null : _mapper.Map<UserTaskViewModel>(taskFromDb);
+            return !TryFindTaskInDb(id, out var taskFromDb) ? null : _mapper.Map<UserTaskDetailsViewModel>(taskFromDb);
         }
 
-        public UserTaskEntity Create(UserTaskViewModel taskViewModel)
+        public UserTaskEntity Create(UserTaskDetailsViewModel taskDetailsViewModel)
         {
-            var newTask = _dbContext.UserTasks.Add(_mapper.Map<UserTaskEntity>(taskViewModel));
+            var newTask = _mapper.Map<UserTaskEntity>(taskDetailsViewModel);
+            newTask = _dbContext.UserTasks.Add(newTask).Entity;
+
             _dbContext.SaveChanges();
-            return newTask.Entity;
+            return newTask;
         }
 
-        public void Update(int id, UserTaskViewModel taskViewModel)
+        public bool Update(int id, UserTaskDetailsViewModel taskDetailsViewModel)
         {
-            var updatedTask = _mapper.Map<UserTaskEntity>(taskViewModel);
-            updatedTask.Id = id;
-            _dbContext.UserTasks.Update(updatedTask);
-            _dbContext.SaveChanges();
+            if (!TryFindTaskInDb(id, out var taskFromDb)) return false;
+
+            var updatedTask = _mapper.Map<UserTaskEntity>(taskDetailsViewModel);
+            _dbContext.Entry(taskFromDb).CurrentValues.SetValues(updatedTask);
+            return true;
         }
 
-        public void Remove(int id)
+
+        public bool Remove(int id)
         {
-            var taskFromDb = _dbContext.UserTasks.Find(id);
+            if (!TryFindTaskInDb(id, out var taskFromDb)) return false;
+
             _dbContext.UserTasks.Remove(taskFromDb);
             _dbContext.SaveChanges();
+            return true;
+        }
+
+        private bool TryFindTaskInDb(int id, out UserTaskEntity taskFromDb)
+        {
+            taskFromDb = _dbContext.UserTasks.Find(id);
+            return taskFromDb != null;
         }
     }
 }

@@ -33,27 +33,23 @@ namespace TaskList.API
         public ActionResult<TaskGroupViewModel> Create(TaskGroupViewModel groupViewModel)
         {
             var newGroup = _groupDbManager.Create(groupViewModel);
-            return CreatedAtRoute("GetTaskGroup", new { id = newGroup.Id }, groupViewModel);
+            return CreatedAtAction(nameof(Get), new { id = newGroup.Id }, groupViewModel);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, TaskGroupViewModel groupViewModel)
         {
-            if (_groupDbManager.Get(id) == null)
-                return NotFound();
-
-            _groupDbManager.Update(id, groupViewModel);
-            return NoContent();
+            if (_groupDbManager.Update(id, groupViewModel))
+                return NoContent();
+            return NotFound();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_groupDbManager.Get(id) == null)
-                return NotFound();
-
-            _groupDbManager.Remove(id);
-            return NoContent();
+            if (_groupDbManager.Remove(id))
+                return NoContent();
+            return NotFound();
         }
     }
 }

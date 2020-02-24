@@ -4,6 +4,7 @@ import {
   TaskGroupActionTypes,
   TASK_GROUP_LOAD_ALL_STARTED,
   TASK_GROUP_LOAD_ALL_COMPLETED,
+  TASK_GROUP_SAVE_COMPLETED,
 } from './types'
 
 const initialState: TaskGroupsState = {
@@ -22,6 +23,12 @@ const reducer: Reducer<TaskGroupsState> = (state: TaskGroupsState = initialState
         isLoaded: true,
         taskGroups: action.payload,
       }
+    case TASK_GROUP_SAVE_COMPLETED:
+      const existingTaskGroupIndex = state.taskGroups.findIndex(g => g.id === action.payload.id)
+      const newGroupsState = [...state.taskGroups]
+      if (existingTaskGroupIndex !== -1) newGroupsState.splice(existingTaskGroupIndex, 1)
+      newGroupsState.push(action.payload)
+      return Object.assign({}, state, { taskGroups: newGroupsState })
     default:
       return state
   }

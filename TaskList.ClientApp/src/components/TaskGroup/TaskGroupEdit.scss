@@ -3,9 +3,7 @@
     flex-direction: column;
 
     &__header {
-        >form {
-            display: flex;
-        }
+        display: flex;
 
         &__name-input {
             flex: 1 1 100%;

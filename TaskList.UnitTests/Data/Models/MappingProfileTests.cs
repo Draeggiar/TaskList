@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaskList.Data.Enums;
 using TaskList.Data.Models;
 using TaskList.Data.Models.DbEntities;

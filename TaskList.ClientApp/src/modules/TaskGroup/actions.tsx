@@ -1,5 +1,12 @@
+import axios from 'axios'
 import { AppThunkAction } from '../../store/store'
-import { TaskGroup, TaskGroupActionTypes, TASK_GROUP_LOAD_ALL_COMPLETED, TASK_GROUP_LOAD_ALL_STARTED } from './types'
+import {
+  TaskGroup,
+  TaskGroupActionTypes,
+  TASK_GROUP_LOAD_ALL_COMPLETED,
+  TASK_GROUP_LOAD_ALL_STARTED,
+  TASK_GROUP_SAVE_COMPLETED,
+} from './types'
 
 const loadAllGroups = (): TaskGroupActionTypes => {
   return {
@@ -14,6 +21,13 @@ const groupsLoadingCompleted = (taskGroups: TaskGroup[]): TaskGroupActionTypes =
   }
 }
 
+const saveGroupCompleted = (taskGroup: TaskGroup): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_SAVE_COMPLETED,
+    payload: taskGroup,
+  }
+}
+
 export const requestTaskGroups = (): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
   const state = getState()
   if (!state.groups.isLoading && !state.groups.isLoaded) {
@@ -24,4 +38,12 @@ export const requestTaskGroups = (): AppThunkAction<TaskGroupActionTypes> => (di
         dispatch(groupsLoadingCompleted(data))
       })
   }
+}
+
+export const saveTaskGroup = (taskGroup: TaskGroup): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
+  const action =
+    taskGroup.id != 0
+      ? axios.put<TaskGroup>(`api/taskgroup/${taskGroup.id}`, taskGroup)
+      : axios.post<TaskGroup>('api/taskgroup', taskGroup)
+  return action.then(response => dispatch(saveGroupCompleted(response.data)))
 }

@@ -9,7 +9,7 @@ type Props = TaskGroup
 const TaskGroupTile = ({ id, name, userTasks }: Props) => {
   const history = useHistory()
   return (
-    <div className="task-group-tile" key={id} onClick={() => history.push(`/taskGroup/${id}`)}>
+    <div className="task-group-tile" onClick={() => history.push(`/taskGroup/${id}`)}>
       <span className="task-group-tile__name">{name}</span>
       <span className="task-group-tile__task-count">{userTasks.length}</span>
     </div>

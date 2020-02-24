@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Route, match } from 'react-router-dom'
 import { TaskGroup } from '../../modules/TaskGroup/types'
 import UserTaskList from '../UserTask/TaskList/UserTaskListContainer'
@@ -11,27 +11,39 @@ type Props = {
   match: match
   areGroupsLoaded: boolean
   requestTaskGroups: () => void
+  saveTaskGroup: (TaskGroup: TaskGroup) => void
 }
 
-const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroups }: Props) => {
+const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroups, saveTaskGroup }: Props) => {
   useEffect(() => {
     if (!areGroupsLoaded) {
       requestTaskGroups() //TODO zamienić na pojedynczą grupę
     }
   })
 
+  const [groupName, setGroupName] = useState(selectedGroup ? selectedGroup.name : '')
+
   return (
     <div className="task-group-edit">
       <span className="task-group-edit__header">
-        <form>
-          <Link to="/">Back</Link>
-          <input
-            className="task-group-edit__header__name-input"
-            type="text"
-            value={selectedGroup ? selectedGroup.name : ''}
-          />
-          <input type="submit" value="Save group" />
-        </form>
+        <Link to="/">Back</Link>
+        <input
+          className="task-group-edit__header__name-input"
+          type="text"
+          value={groupName}
+          onChange={e => setGroupName(e.target.value)}
+        />
+        <button
+          onClick={() =>
+            saveTaskGroup({
+              id: selectedGroup ? selectedGroup.id : 0,
+              name: groupName,
+              userTasks: selectedGroup ? selectedGroup.userTasks : [],
+            })
+          }
+        >
+          Save group
+        </button>
       </span>
       <div className="task-group-edit__content">
         <div className="task-group-edit__content__left-column">

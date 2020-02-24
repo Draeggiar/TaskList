@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using TaskList.Data.Models.DbEntities;
 using TaskList.Data.Models.ViewModels;
 
 namespace TaskList.Data.Logic.UserTask
 {
-    class UserTaskDbManager : IUserTaskDbManager
+    public class UserTaskDbManager : IUserTaskDbManager
     {
         private readonly TasksDbContext _dbContext;
         private readonly IMapper _mapper;

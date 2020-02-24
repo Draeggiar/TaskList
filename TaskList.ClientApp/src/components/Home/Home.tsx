@@ -21,7 +21,9 @@ const Home = ({ isLoading, taskGroups, requestUserGroups, isLoaded }: Props) => 
         <div className="home__content">
           <div className="home_content__groups">
             {taskGroups && taskGroups.length
-              ? taskGroups.map(group => <TaskGroupTile id={group.id} name={group.name} userTasks={group.userTasks} />)
+              ? taskGroups.map(group => (
+                  <TaskGroupTile key={group.id} id={group.id} name={group.name} userTasks={group.userTasks} />
+                ))
               : null}
           </div>
           <Link className="home__content__add-new-button" to={`taskGroup/${0}`}>

@@ -7,16 +7,22 @@ const TaskStatus = Object.freeze({
 })
 
 type Props = {
-  taskStatus: number | null
+  taskStatus: number
+  onChange: (value: number) => void
 }
 
-const TaskStatusSelect = ({ taskStatus = 0 }: Props) => {
+const TaskStatusSelect = ({ taskStatus = 0, onChange }: Props) => {
   const [selected, setSelected] = useState(taskStatus)
 
+  const onSelectChange = (value: number) => {
+    setSelected(value)
+    onChange(value)
+  }
+
   return (
-    <select name="taskStatus" onChange={e => setSelected(parseInt(e.target.value))}>
+    <select name="taskStatus" onChange={e => onSelectChange(parseInt(e.target.value))} defaultValue={selected}>
       {Object.entries(TaskStatus).map(([key, value]) => (
-        <option value={key} selected={selected === parseInt(key)}>
+        <option key={key} value={key}>
           {value}
         </option>
       ))}

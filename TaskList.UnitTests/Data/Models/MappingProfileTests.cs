@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using TaskList.Data.Enums;
 using TaskList.Data.Models;
 using TaskList.Data.Models.DbEntities;
 using TaskList.Data.Models.ViewModels;
@@ -46,7 +45,7 @@ namespace TaskList.UnitTests.Data.Models
                 Deadline = new DateTime(2003, 2, 1),
                 Id = 1,
                 Name = "TestTask",
-                TaskStatus = TaskStatus.InProgress,
+                TaskStatus = 1,
                 UserId = 1,
                 GroupId = 1
             };
@@ -68,7 +67,7 @@ namespace TaskList.UnitTests.Data.Models
             {
                 Id = 1,
                 Name = "TestTask",
-                TaskStatus = TaskStatus.InProgress,
+                TaskStatus = 1,
                 UserId = 1,
                 Deadline = new DateTime(2003, 2, 1),
                 GroupId = 1

@@ -8,7 +8,7 @@ namespace TaskList.Data.Logic.UserTask
     {
         List<UserTaskDetailsViewModel> Get();
         UserTaskDetailsViewModel Get(int id);
-        UserTaskEntity Create(UserTaskDetailsViewModel taskDetailsViewModel);
+        int Create(UserTaskDetailsViewModel taskDetailsViewModel);
         bool Update(int id, UserTaskDetailsViewModel taskDetailsViewModel);
         bool Remove(int id);
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TaskList.Data.Models.DbEntities;
 using TaskList.Data.Models.ViewModels;
 
 namespace TaskList.Data.Logic.TaskGroup
@@ -8,7 +7,7 @@ namespace TaskList.Data.Logic.TaskGroup
     {
         List<TaskGroupViewModel> Get();
         TaskGroupViewModel Get(int id);
-        TaskGroupEntity Create(TaskGroupViewModel task);
+        int Create(TaskGroupViewModel task);
         bool Update(int id, TaskGroupViewModel task);
         bool Remove(int id);
     }

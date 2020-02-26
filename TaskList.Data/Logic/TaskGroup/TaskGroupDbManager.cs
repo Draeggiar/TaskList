@@ -9,7 +9,7 @@ using TaskList.Data.Models.ViewModels;
 
 namespace TaskList.Data.Logic.TaskGroup
 {
-    class TaskGroupDbManager : ITaskGroupDbManager
+    public class TaskGroupDbManager : ITaskGroupDbManager
     {
         private readonly TasksDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -34,20 +34,21 @@ namespace TaskList.Data.Logic.TaskGroup
             return !TryFindGroupInDb(id, out var groupFromDb) ? null : _mapper.Map<TaskGroupViewModel>(groupFromDb);
         }
 
-        public TaskGroupEntity Create(TaskGroupViewModel group)
+        public int Create(TaskGroupViewModel group)
         {
             var newGroup = _mapper.Map<TaskGroupEntity>(group);
+
             newGroup = _dbContext.TaskGroups.Add(newGroup).Entity;
-            
             _dbContext.SaveChanges();
-            return newGroup;
+
+            return newGroup.Id;
         }
 
         public bool Update(int id, TaskGroupViewModel group)
         {
             if (!TryFindGroupInDb(id, out var groupFromDb)) return false;
 
-            var updatedGroup = _mapper.Map<UserTaskEntity>(group);
+            var updatedGroup = _mapper.Map<TaskGroupEntity>(group);
             _dbContext.Entry(groupFromDb).CurrentValues.SetValues(updatedGroup);
             return true;
         }

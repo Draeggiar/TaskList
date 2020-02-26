@@ -32,8 +32,9 @@ namespace TaskList.API
         [HttpPost]
         public ActionResult<UserTaskDetailsViewModel> Create(UserTaskDetailsViewModel taskDetailsViewModel)
         {
-            var newTask = _userTaskDbManager.Create(taskDetailsViewModel);
-            return CreatedAtAction(nameof(Get), new { id = newTask.Id }, taskDetailsViewModel);
+            var newTaskId = _userTaskDbManager.Create(taskDetailsViewModel);
+            taskDetailsViewModel.Id = newTaskId;
+            return CreatedAtAction(nameof(Get), new { id = newTaskId }, taskDetailsViewModel);
         }
 
         [HttpPut("{id}")]
@@ -53,10 +54,9 @@ namespace TaskList.API
         }
 
         [HttpGet("group/{groupId}")]
-        public ActionResult<List<SimpleUserTaskViewModel>> GetAllTaskInGroup(int groupId)
+        public ActionResult<List<UserTaskDetailsViewModel>> GetAllTaskInGroup(int groupId)
         {
-            var tasks = _userTaskDbManager.Get()?.Where(t => t.GroupId == groupId)
-                .Select(t => t as SimpleUserTaskViewModel);
+            var tasks = _userTaskDbManager.Get()?.Where(t => t.GroupId == groupId);
             if (tasks == null)
                 return NotFound();
             return tasks.ToList();

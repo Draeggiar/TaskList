@@ -31,13 +31,14 @@ namespace TaskList.Data.Logic.UserTask
             return !TryFindTaskInDb(id, out var taskFromDb) ? null : _mapper.Map<UserTaskDetailsViewModel>(taskFromDb);
         }
 
-        public UserTaskEntity Create(UserTaskDetailsViewModel taskDetailsViewModel)
+        public int Create(UserTaskDetailsViewModel taskDetailsViewModel)
         {
             var newTask = _mapper.Map<UserTaskEntity>(taskDetailsViewModel);
             newTask = _dbContext.UserTasks.Add(newTask).Entity;
 
             _dbContext.SaveChanges();
-            return newTask;
+
+            return newTask.Id;
         }
 
         public bool Update(int id, UserTaskDetailsViewModel taskDetailsViewModel)

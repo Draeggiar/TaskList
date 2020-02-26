@@ -1,15 +1,11 @@
-import { Dictionary } from '../../utils/CommonTypes'
+import { Dictionary } from '../../utils/Dictionary'
 
-export const USER_TASK_LOAD_STARTED = 'USER_TASK_LOAD_STARTED'
 export const USER_TASK_LOAD_COMPLETED = 'USER_TASK_LOAD_COMPLETED'
 
 export const USER_TASK_LOAD_ALL_IN_GROUP_STARTED = 'USER_TASK_LOAD_ALL_IN_GROUP_STARTED'
 export const USER_TASK_LOAD_ALL_IN_GROUP_COMPLETED = 'USER_TASK_LOAD_ALL_IN_GROUP_COMPLETED'
 
-interface LoadStartedAction {
-  type: typeof USER_TASK_LOAD_STARTED
-  taskId: number
-}
+export const USER_TASK_SAVE_COMPLETED = 'USER_TASK_SAVE_COMPLETED'
 
 interface LoadCompletedAction {
   type: typeof USER_TASK_LOAD_COMPLETED
@@ -18,7 +14,7 @@ interface LoadCompletedAction {
 
 interface LoadAllInGroupAction {
   type: typeof USER_TASK_LOAD_ALL_IN_GROUP_STARTED
-  groupId: number
+  payload: number
 }
 
 interface LoadAllInGroupCompletedAction {
@@ -26,11 +22,16 @@ interface LoadAllInGroupCompletedAction {
   payload: SimpleTask[]
 }
 
+interface SaveUserTaskCompletedAction {
+  type: typeof USER_TASK_SAVE_COMPLETED
+  payload: TaskDetails
+}
+
 export type UserTaskActionTypes =
-  | LoadStartedAction
   | LoadCompletedAction
   | LoadAllInGroupAction
   | LoadAllInGroupCompletedAction
+  | SaveUserTaskCompletedAction
 
 export interface UserTasksState {
   isLoading: boolean
@@ -44,7 +45,7 @@ export interface SimpleTask {
 }
 
 export interface TaskDetails extends SimpleTask {
-  deadline: Date
+  deadline: string | Date
   userId: number | undefined
   taskStatus: number
   groupId: number

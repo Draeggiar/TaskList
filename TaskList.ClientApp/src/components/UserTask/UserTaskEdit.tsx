@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DateTime from 'react-datetime'
 import moment from 'moment'
 import TaskStatusSelect from './TaskStatusSelect/TaskStatusSelect'
@@ -8,12 +8,21 @@ import './UserTaskEdit.scss'
 
 type Props = {
   selectedTask: TaskDetails | null | undefined
+  saveUserTask: (taskDetails: TaskDetails) => void
+  groupId: number
+  requestUserTask: (taskId: number) => void
 }
 
-const UserTaskEdit = ({ selectedTask }: Props) => {
+const UserTaskEdit = ({ selectedTask, saveUserTask, groupId }: Props) => {
   const [name, setName] = useState(selectedTask ? selectedTask.name : '')
-  const [deadline, setDeadline] = useState(selectedTask ? selectedTask.deadline : '')
-  const [status, setStatus] = useState(selectedTask ? selectedTask.taskStatus : 0)
+  const [deadline, setDeadline] = useState(selectedTask ? selectedTask.deadline : new Date())
+  const [taskStatus, setTaskStatus] = useState(selectedTask ? selectedTask.taskStatus : 0)
+
+  useEffect(() => {
+    setName(selectedTask ? selectedTask.name : '')
+    setDeadline(selectedTask ? selectedTask.deadline : new Date())
+    setTaskStatus(selectedTask ? selectedTask.taskStatus : 0)
+  }, [selectedTask])
 
   return (
     <div className="user-task-edit">
@@ -25,7 +34,7 @@ const UserTaskEdit = ({ selectedTask }: Props) => {
         <label>Deadline:</label>
         <DateTime
           timeFormat={false}
-          value={deadline}
+          value={moment(deadline).format(moment.HTML5_FMT.DATE)}
           onChange={value => setDeadline(moment(value).format(moment.HTML5_FMT.DATE))}
         />
       </span>
@@ -35,9 +44,22 @@ const UserTaskEdit = ({ selectedTask }: Props) => {
       </span>
       <span>
         <label>Status:</label>
-        <TaskStatusSelect taskStatus={status} onChange={setStatus} />
+        <TaskStatusSelect taskStatus={taskStatus} onChange={setTaskStatus} />
       </span>
-      <button>Save task</button>
+      <button
+        onClick={() =>
+          saveUserTask({
+            id: selectedTask ? selectedTask.id : 0,
+            name,
+            deadline,
+            taskStatus,
+            userId: undefined,
+            groupId: selectedTask ? selectedTask.groupId : groupId,
+          })
+        }
+      >
+        Save task
+      </button>
     </div>
   )
 }

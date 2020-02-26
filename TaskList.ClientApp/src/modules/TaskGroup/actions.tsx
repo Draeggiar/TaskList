@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { AppThunkAction } from '../../store/store'
 import {
   TaskGroup,
@@ -7,6 +7,7 @@ import {
   TASK_GROUP_LOAD_ALL_STARTED,
   TASK_GROUP_SAVE_COMPLETED,
 } from './types'
+import { navigateToGroup } from '../../utils/Navigator'
 
 const loadAllGroups = (): TaskGroupActionTypes => {
   return {
@@ -41,9 +42,12 @@ export const requestTaskGroups = (): AppThunkAction<TaskGroupActionTypes> => (di
 }
 
 export const saveTaskGroup = (taskGroup: TaskGroup): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
-  const action =
-    taskGroup.id != 0
-      ? axios.put<TaskGroup>(`api/taskgroup/${taskGroup.id}`, taskGroup)
-      : axios.post<TaskGroup>('api/taskgroup', taskGroup)
-  return action.then(response => dispatch(saveGroupCompleted(response.data)))
+  taskGroup.id === 0
+    ? Axios.post<TaskGroup>('api/taskgroup', taskGroup).then(response => {
+        dispatch(saveGroupCompleted(response.data))
+        navigateToGroup(response.data.id)
+      })
+    : Axios.put<TaskGroup>(`api/taskgroup/${taskGroup.id}`, taskGroup).then(() =>
+        dispatch(saveGroupCompleted(taskGroup))
+      )
 }

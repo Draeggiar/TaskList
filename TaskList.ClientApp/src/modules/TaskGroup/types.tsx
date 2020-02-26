@@ -1,5 +1,6 @@
 export const TASK_GROUP_LOAD_ALL_STARTED = 'TASK_GROUP_LOAD_ALL_STARTED'
 export const TASK_GROUP_LOAD_ALL_COMPLETED = 'TASK_GROUP_LOAD_ALL_COMPLETED'
+
 export const TASK_GROUP_SAVE_COMPLETED = 'TASK_GROUP_SAVE_COMPLETED'
 
 interface LoadAllStartedAction {
@@ -11,12 +12,12 @@ interface LoadAllCompletedAction {
   payload: TaskGroup[]
 }
 
-interface SaveGroupcCompletedAction {
+interface SaveGroupCompletedAction {
   type: typeof TASK_GROUP_SAVE_COMPLETED
   payload: TaskGroup
 }
 
-export type TaskGroupActionTypes = LoadAllStartedAction | LoadAllCompletedAction | SaveGroupcCompletedAction
+export type TaskGroupActionTypes = LoadAllStartedAction | LoadAllCompletedAction | SaveGroupCompletedAction
 
 export interface TaskGroupsState {
   isLoading: boolean

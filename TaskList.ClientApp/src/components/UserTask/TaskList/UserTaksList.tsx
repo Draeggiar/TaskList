@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link, match } from 'react-router-dom'
 import { SimpleTask } from '../../../modules/UserTask/types'
-import { Dictionary } from '../../../utils/CommonTypes'
+import { Dictionary } from '../../../utils/Dictionary'
 
 type Props = {
   userTasks: Dictionary<SimpleTask>
@@ -22,7 +22,7 @@ const UserTaskList = ({ userTasks, match, isLoading, requestTasksInGroup, groupI
   ) : (
     <div>
       {Object.entries(userTasks).map(([key, task]) => (
-        <Link key={task.id} to={`${match.url}/userTask/${task.id}`}>
+        <Link key={key} to={`${match.url}/userTask/${task.id}`}>
           {task.name}
         </Link>
       ))}

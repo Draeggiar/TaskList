@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Route, match } from 'react-router-dom'
+import { compile } from 'path-to-regexp'
 import { TaskGroup } from '../../modules/TaskGroup/types'
 import UserTaskList from '../UserTask/TaskList/UserTaskListContainer'
 import UserTaskEdit from '../UserTask/UserTaskEditContainer'
@@ -8,20 +9,24 @@ import './TaskGroupEdit.scss'
 
 type Props = {
   selectedGroup: TaskGroup | null | undefined
-  match: match
+  match: match<{ groupId: string }>
   areGroupsLoaded: boolean
   requestTaskGroups: () => void
   saveTaskGroup: (TaskGroup: TaskGroup) => void
 }
 
 const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroups, saveTaskGroup }: Props) => {
+  const [groupName, setGroupName] = useState(selectedGroup ? selectedGroup.name : '')
+
   useEffect(() => {
     if (!areGroupsLoaded) {
       requestTaskGroups() //TODO zamienić na pojedynczą grupę
     }
-  })
+  }, [areGroupsLoaded])
 
-  const [groupName, setGroupName] = useState(selectedGroup ? selectedGroup.name : '')
+  useEffect(() => {
+    if (selectedGroup) setGroupName(selectedGroup.name)
+  }, [selectedGroup])
 
   return (
     <div className="task-group-edit">

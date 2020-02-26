@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const TaskStatus = Object.freeze({
   0: 'New',
@@ -11,8 +11,12 @@ type Props = {
   onChange: (value: number) => void
 }
 
-const TaskStatusSelect = ({ taskStatus = 0, onChange }: Props) => {
+const TaskStatusSelect = ({ taskStatus, onChange }: Props) => {
   const [selected, setSelected] = useState(taskStatus)
+
+  useEffect(() => {
+    setSelected(taskStatus)
+  }, [taskStatus])
 
   const onSelectChange = (value: number) => {
     setSelected(value)
@@ -20,7 +24,11 @@ const TaskStatusSelect = ({ taskStatus = 0, onChange }: Props) => {
   }
 
   return (
-    <select name="taskStatus" onChange={e => onSelectChange(parseInt(e.target.value))} defaultValue={selected}>
+    <select
+      name="taskStatus"
+      onChange={e => onSelectChange(parseInt(e.target.value))}
+      value={selected}
+    >
       {Object.entries(TaskStatus).map(([key, value]) => (
         <option key={key} value={key}>
           {value}

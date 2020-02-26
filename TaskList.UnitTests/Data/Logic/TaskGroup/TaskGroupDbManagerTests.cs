@@ -2,10 +2,10 @@
 using NUnit.Framework;
 using TaskList.Data.Models;
 
-namespace TaskList.UnitTests.Data.Logic.UserTask
+namespace TaskList.UnitTests.Data.Logic.TaskGroup
 {
     [TestFixture]
-    public class UserTaskDbManagerTests
+    public class TaskGroupDbManagerTests
     {
         private IMapper _mapper;
 
@@ -14,5 +14,6 @@ namespace TaskList.UnitTests.Data.Logic.UserTask
         {
             _mapper = new MapperConfiguration(cfg => { cfg.AddProfile(new MappingProfile()); }).CreateMapper();
         }
+
     }
 }

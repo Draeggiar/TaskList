@@ -32,8 +32,9 @@ namespace TaskList.API
         [HttpPost]
         public ActionResult<TaskGroupViewModel> Create(TaskGroupViewModel groupViewModel)
         {
-            var newGroup = _groupDbManager.Create(groupViewModel);
-            return CreatedAtAction(nameof(Get), new { id = newGroup.Id }, groupViewModel);
+            var newGroupId = _groupDbManager.Create(groupViewModel);
+            groupViewModel.Id = newGroupId;
+            return CreatedAtAction(nameof(Get), new { id = newGroupId }, groupViewModel);
         }
 
         [HttpPut("{id}")]

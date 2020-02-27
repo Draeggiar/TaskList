@@ -12,6 +12,7 @@ const TaskGroupTile = ({ id, name, userTasks }: Props) => {
     <div className="task-group-tile" onClick={() => history.push(`/taskGroup/${id}`)}>
       <span className="task-group-tile__name">{name}</span>
       <span className="task-group-tile__task-count">{userTasks.length}</span>
+      //TODO remove
     </div>
   )
 }

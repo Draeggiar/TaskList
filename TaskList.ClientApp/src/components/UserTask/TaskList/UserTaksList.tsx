@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import { Link, match } from 'react-router-dom'
 import { SimpleTask } from '../../../modules/UserTask/types'
 import { Dictionary } from '../../../utils/Dictionary'
+import Spinner from '../../SharedComponents/Spinner'
+
+import './UserTaskList.scss'
 
 type Props = {
   userTasks: Dictionary<SimpleTask>
@@ -17,16 +20,17 @@ const UserTaskList = ({ userTasks, match, isLoading, requestTasksInGroup, groupI
     if (!isLoading && !areTaskLoaded) requestTasksInGroup(groupId)
   })
 
-  return isLoading ? (
-    <span>Loading ... </span>
-  ) : (
-    <div>
-      {Object.entries(userTasks).map(([key, task]) => (
-        <Link key={key} to={`${match.url}/userTask/${task.id}`}>
-          {task.name}
-        </Link>
-      ))}
-    </div>
+  return (
+    <Spinner isLoading={isLoading}>
+      <div className="task-list">
+        {Object.entries(userTasks).map(([key, task]) => (
+          <Link className="task-list__task-tile" key={key} to={`${match.url}/userTask/${task.id}`}>
+            {task.name}
+          </Link>
+          //TODO remove
+        ))}
+      </div>
+    </Spinner>
   )
 }
 

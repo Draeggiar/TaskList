@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Route, match } from 'react-router-dom'
-import { compile } from 'path-to-regexp'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { TaskGroup } from '../../modules/TaskGroup/types'
 import UserTaskList from '../UserTask/TaskList/UserTaskListContainer'
 import UserTaskEdit from '../UserTask/UserTaskEditContainer'
@@ -22,7 +22,7 @@ const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroup
     if (!areGroupsLoaded) {
       requestTaskGroups() //TODO zamienić na pojedynczą grupę
     }
-  }, [areGroupsLoaded])
+  }, [areGroupsLoaded, requestTaskGroups])
 
   useEffect(() => {
     if (selectedGroup) setGroupName(selectedGroup.name)
@@ -31,7 +31,9 @@ const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroup
   return (
     <div className="task-group-edit">
       <span className="task-group-edit__header">
-        <Link to="/">Back</Link>
+        <Link className="task-group-edit__header__back-button" to="/">
+          <FontAwesomeIcon icon="share-square" flip="horizontal" size="2x" />
+        </Link>
         <input
           className="task-group-edit__header__name-input"
           type="text"
@@ -39,6 +41,7 @@ const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroup
           onChange={e => setGroupName(e.target.value)}
         />
         <button
+          className="task-group-edit__header_save-button btn"
           onClick={() =>
             saveTaskGroup({
               id: selectedGroup ? selectedGroup.id : 0,
@@ -47,7 +50,7 @@ const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroup
             })
           }
         >
-          Save group
+          <FontAwesomeIcon icon="save" size="2x" />
         </button>
       </span>
       <div className="task-group-edit__content">
@@ -55,7 +58,9 @@ const TaskGroupEdit = ({ selectedGroup, match, areGroupsLoaded, requestTaskGroup
           {selectedGroup && selectedGroup.userTasks && selectedGroup.userTasks.length ? (
             <UserTaskList match={match} groupId={selectedGroup.id} />
           ) : null}
-          <Link to={`${match.url}/userTask/0`}>Add new task</Link>
+          <Link className="task-group-edit__content__left-column__add-new-button" to={`${match.url}/userTask/0`}>
+            <FontAwesomeIcon icon="plus-circle" size="2x" />
+          </Link>
         </div>
         <div className="task-group-edit__content__right-column">
           <Route path={`${match.path}/userTask/:taskId?`} component={UserTaskEdit} />

@@ -5,10 +5,17 @@
 
         &__groups {
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
         }
 
         &__add-new-button {
             align-self: center;
+            margin: 10px;
+        }
+
+        &--loading {
+            align-items: center;
         }
     }
 }

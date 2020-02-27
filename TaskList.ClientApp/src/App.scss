@@ -1,7 +1,9 @@
+@import './styles/GlobalStyles.scss';
+
 body {
     background-color: lightgrey;
 
     div#root {
-        padding: 20px;
+        padding: 1%;
     }
 }

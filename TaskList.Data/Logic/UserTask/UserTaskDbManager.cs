@@ -47,6 +47,7 @@ namespace TaskList.Data.Logic.UserTask
 
             var updatedTask = _mapper.Map<UserTaskEntity>(taskDetailsViewModel);
             _dbContext.Entry(taskFromDb).CurrentValues.SetValues(updatedTask);
+            _dbContext.SaveChanges();
             return true;
         }
 

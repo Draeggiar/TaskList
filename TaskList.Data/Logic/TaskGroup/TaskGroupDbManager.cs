@@ -50,6 +50,7 @@ namespace TaskList.Data.Logic.TaskGroup
 
             var updatedGroup = _mapper.Map<TaskGroupEntity>(group);
             _dbContext.Entry(groupFromDb).CurrentValues.SetValues(updatedGroup);
+            _dbContext.SaveChanges();
             return true;
         }
 

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { TaskGroupsState } from '../../modules/TaskGroup/types'
 import TaskGroupTile from '../TaskGroup/Tile/TakGroupTile'
-import { Link } from 'react-router-dom'
+import Spinner from '../SharedComponents/Spinner'
 
 import './Home.scss'
 
@@ -12,14 +14,12 @@ const Home = ({ isLoading, taskGroups, requestUserGroups, isLoaded }: Props) => 
     if (!isLoaded) requestUserGroups()
   })
 
-  //TODO Sortowanie
   return (
     <div className="home">
-      {isLoading ? (
-        <span className="home__content--loading">Loading</span>
-      ) : (
+      <Spinner isLoading={isLoading}>
         <div className="home__content">
-          <div className="home_content__groups">
+          //TODO sortowanie
+          <div className="home__content__groups">
             {taskGroups && taskGroups.length
               ? taskGroups.map(group => (
                   <TaskGroupTile key={group.id} id={group.id} name={group.name} userTasks={group.userTasks} />
@@ -27,10 +27,10 @@ const Home = ({ isLoading, taskGroups, requestUserGroups, isLoaded }: Props) => 
               : null}
           </div>
           <Link className="home__content__add-new-button" to={`taskGroup/${0}`}>
-            Add new
+            <FontAwesomeIcon icon="plus-circle" size="3x" />
           </Link>
         </div>
-      )}
+      </Spinner>
     </div>
   )
 }

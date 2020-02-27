@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import './libs/react-datetime/react-datetime.css'
+import './libs/fontawesome/iconslibrary'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'

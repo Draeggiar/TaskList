@@ -5,8 +5,16 @@
     &__header {
         display: flex;
 
+        &__back-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+
         &__name-input {
             flex: 1 1 100%;
+            font-size: 30px;
         }
     }
 
@@ -15,7 +23,15 @@
         flex: 1 1 auto;
 
         &__left-column {
+            display: flex;
             flex: 0 0 25%;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+
+            &__add-new-button {
+                margin: 10px;
+            }
         }
 
         &__right-column {

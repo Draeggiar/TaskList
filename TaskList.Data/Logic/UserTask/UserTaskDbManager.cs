@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -12,26 +13,26 @@ namespace TaskList.Data.Logic.UserTask
         private readonly TasksDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UserTaskDbManager(ITasksDbContext dbContext, IMapper mapper)
+        public UserTaskDbManager(TasksDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext as TasksDbContext;
-            _mapper = mapper;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public List<UserTaskDetailsViewModel> Get()
+        public List<UserTaskViewModel> Get()
         {
             return _dbContext.UserTasks
-                .Select(t => _mapper.Map<UserTaskDetailsViewModel>(t))
+                .Select(t => _mapper.Map<UserTaskViewModel>(t))
                 .ToList();
         }
 
         [return: MaybeNull]
-        public UserTaskDetailsViewModel Get(int id)
+        public UserTaskViewModel Get(int id)
         {
-            return !TryFindTaskInDb(id, out var taskFromDb) ? null : _mapper.Map<UserTaskDetailsViewModel>(taskFromDb);
+            return !TryFindTaskInDb(id, out var taskFromDb) ? null : _mapper.Map<UserTaskViewModel>(taskFromDb);
         }
 
-        public int Create(UserTaskDetailsViewModel taskDetailsViewModel)
+        public int Create(UserTaskViewModel taskDetailsViewModel)
         {
             var newTask = _mapper.Map<UserTaskEntity>(taskDetailsViewModel);
             newTask = _dbContext.UserTasks.Add(newTask).Entity;
@@ -41,7 +42,7 @@ namespace TaskList.Data.Logic.UserTask
             return newTask.Id;
         }
 
-        public bool Update(int id, UserTaskDetailsViewModel taskDetailsViewModel)
+        public bool Update(int id, UserTaskViewModel taskDetailsViewModel)
         {
             if (!TryFindTaskInDb(id, out var taskFromDb)) return false;
 

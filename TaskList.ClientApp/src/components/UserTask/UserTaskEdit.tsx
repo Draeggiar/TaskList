@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import DateTime from 'react-datetime'
 import moment from 'moment'
 import TaskStatusSelect from './TaskStatusSelect/TaskStatusSelect'
-import { TaskDetails } from '../../modules/UserTask/types'
+import { UserTask } from '../../modules/TaskGroup/types'
 
 import './UserTaskEdit.scss'
 
 type Props = {
-  selectedTask: TaskDetails | null | undefined
-  saveUserTask: (taskDetails: TaskDetails) => void
+  addNewTask: (taskDetails: UserTask) => void
   groupId: number
-  requestUserTask: (taskId: number) => void
 }
 
-const UserTaskEdit = ({ selectedTask, saveUserTask, groupId }: Props) => {
-  const [name, setName] = useState(selectedTask ? selectedTask.name : '')
-  const [deadline, setDeadline] = useState(selectedTask ? selectedTask.deadline : new Date())
-  const [taskStatus, setTaskStatus] = useState(selectedTask ? selectedTask.taskStatus : 0)
-
-  useEffect(() => {
-    setName(selectedTask ? selectedTask.name : '')
-    setDeadline(selectedTask ? selectedTask.deadline : new Date())
-    setTaskStatus(selectedTask ? selectedTask.taskStatus : 0)
-  }, [selectedTask])
+const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
+  const [name, setName] = useState('')
+  const [deadline, setDeadline] = useState(new Date().toString())
+  const [taskStatus, setTaskStatus] = useState(0)
 
   return (
     <div className="user-task-edit">
@@ -48,17 +40,17 @@ const UserTaskEdit = ({ selectedTask, saveUserTask, groupId }: Props) => {
       </span>
       <button
         onClick={() =>
-          saveUserTask({
-            id: selectedTask ? selectedTask.id : 0,
+          addNewTask({
+            id: null,
             name,
             deadline,
             taskStatus,
-            userId: undefined,
-            groupId: selectedTask ? selectedTask.groupId : groupId,
+            userId: null,
+            groupId: groupId,
           })
         }
       >
-        Save task
+        Add task
       </button>
     </div>
   )

@@ -5,30 +5,58 @@ import {
   TASK_GROUP_LOAD_ALL_STARTED,
   TASK_GROUP_LOAD_ALL_COMPLETED,
   TASK_GROUP_SAVE_COMPLETED,
+  TASK_GROUP_ADD_NEW_TASK,
+  TASK_GROUP_CREATE,
+  TASK_GROUP_CLEAR_UNSAVED,
 } from './types'
 
 const initialState: TaskGroupsState = {
-  isLoading: false,
-  isLoaded: false,
+  areLoading: false,
+  areLoaded: false,
   taskGroups: [],
 }
 
 const reducer: Reducer<TaskGroupsState> = (state: TaskGroupsState = initialState, action: TaskGroupActionTypes) => {
   switch (action.type) {
+    case TASK_GROUP_CREATE:
+      const newGroupsState = state.taskGroups
+      newGroupsState.push({ id: 0, name: '', userTasks: [] })
+      return { ...state, taskGroups: newGroupsState }
     case TASK_GROUP_LOAD_ALL_STARTED:
-      return Object.assign({}, state, { isLoading: true, isLoaded: false })
+      return Object.assign({}, state, { areLoading: true, areLoaded: false })
     case TASK_GROUP_LOAD_ALL_COMPLETED:
       return {
-        isLoading: false,
-        isLoaded: true,
+        areLoading: false,
+        areLoaded: true,
         taskGroups: action.payload,
       }
-    case TASK_GROUP_SAVE_COMPLETED:
-      const existingTaskGroupIndex = state.taskGroups.findIndex(g => g.id === action.payload.id)
+    case TASK_GROUP_SAVE_COMPLETED: {
       const newGroupsState = [...state.taskGroups]
-      if (existingTaskGroupIndex !== -1) newGroupsState.splice(existingTaskGroupIndex, 1)
+
+      let groupIndex = state.taskGroups.findIndex(g => g.id === action.payload.id)
+      if (groupIndex === -1) groupIndex = state.taskGroups.findIndex(g => g.id === 0)
+      if (groupIndex !== -1) newGroupsState.splice(groupIndex, 1)
+
       newGroupsState.push(action.payload)
-      return Object.assign({}, state, { taskGroups: newGroupsState })
+
+      return { ...state, taskGroups: newGroupsState }
+    }
+    case TASK_GROUP_ADD_NEW_TASK: {
+      const newGroupsState = state.taskGroups.map(group => {
+        if (group.id !== action.payload.groupId) return group
+
+        group.userTasks.push(action.payload)
+        return {
+          ...group,
+        }
+      })
+
+      return { ...state, taskGroups: newGroupsState }
+    }
+    case TASK_GROUP_CLEAR_UNSAVED: {
+      const newGroupsState = state.taskGroups.filter(g => g.id !== 0)
+      return { ...state, taskGroups: newGroupsState }
+    }
     default:
       return state
   }

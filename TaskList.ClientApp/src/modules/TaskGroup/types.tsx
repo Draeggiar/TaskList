@@ -1,7 +1,17 @@
+export const TASK_GROUP_CREATE = 'TASK_GROUP_CREATE'
+
 export const TASK_GROUP_LOAD_ALL_STARTED = 'TASK_GROUP_LOAD_ALL_STARTED'
 export const TASK_GROUP_LOAD_ALL_COMPLETED = 'TASK_GROUP_LOAD_ALL_COMPLETED'
 
 export const TASK_GROUP_SAVE_COMPLETED = 'TASK_GROUP_SAVE_COMPLETED'
+
+export const TASK_GROUP_ADD_NEW_TASK = 'TASK_GROUP_ADD_NEW_TASK'
+
+export const TASK_GROUP_CLEAR_UNSAVED = 'TASK_GROUP_CLEAR_UNSAVED'
+
+interface AddNewGroupAction {
+  type: typeof TASK_GROUP_CREATE
+}
 
 interface LoadAllStartedAction {
   type: typeof TASK_GROUP_LOAD_ALL_STARTED
@@ -17,16 +27,40 @@ interface SaveGroupCompletedAction {
   payload: TaskGroup
 }
 
-export type TaskGroupActionTypes = LoadAllStartedAction | LoadAllCompletedAction | SaveGroupCompletedAction
+interface AddNewTaskAction {
+  type: typeof TASK_GROUP_ADD_NEW_TASK
+  payload: UserTask
+}
+
+interface ClearUnsavedGroupsAction {
+  type: typeof TASK_GROUP_CLEAR_UNSAVED
+}
+
+export type TaskGroupActionTypes =
+  | AddNewGroupAction
+  | LoadAllStartedAction
+  | LoadAllCompletedAction
+  | SaveGroupCompletedAction
+  | AddNewTaskAction
+  | ClearUnsavedGroupsAction
 
 export interface TaskGroupsState {
-  isLoading: boolean
-  isLoaded: boolean
+  areLoading: boolean
+  areLoaded: boolean
   taskGroups: TaskGroup[]
 }
 
 export interface TaskGroup {
   id: number
   name: string
-  userTasks: number[]
+  userTasks: UserTask[]
+}
+
+export interface UserTask {
+  id: number | null
+  name: string
+  deadline: string | Date
+  userId: number | null
+  taskStatus: number
+  groupId: number
 }

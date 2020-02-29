@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskList", "TaskList\TaskLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskList.Data", "TaskList.Data\TaskList.Data.csproj", "{0DF20C3E-13B6-4459-A9D1-17B801A2559D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.UnitTests", "TaskList.UnitTests\TaskList.UnitTests.csproj", "{BB3DF072-3505-48CD-AFA8-A7362A039EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskList.UnitTests", "TaskList.UnitTests\TaskList.UnitTests.csproj", "{BB3DF072-3505-48CD-AFA8-A7362A039EE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,9 +14,9 @@ namespace TaskList.Data.Logic.TaskGroup
         private readonly TasksDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public TaskGroupDbManager(ITasksDbContext dbContext, IMapper mapper)
+        public TaskGroupDbManager(TasksDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext as TasksDbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -65,7 +65,9 @@ namespace TaskList.Data.Logic.TaskGroup
 
         private bool TryFindGroupInDb(int id, out TaskGroupEntity groupFromDb)
         {
-            groupFromDb = _dbContext.TaskGroups.Find(id);
+            groupFromDb = _dbContext.TaskGroups
+                .Include(g => g.UserTasks)
+                .SingleOrDefault(g => g.Id == id);
             return groupFromDb != null;
         }
     }

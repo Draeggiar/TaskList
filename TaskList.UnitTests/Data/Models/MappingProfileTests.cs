@@ -40,7 +40,7 @@ namespace TaskList.UnitTests.Data.Models
                 UserId = 1,
                 GroupId = 1
             };
-            var expected = new UserTaskDetailsViewModel
+            var expected = new UserTaskViewModel
             {
                 Deadline = new DateTime(2003, 2, 1),
                 Id = 1,
@@ -50,9 +50,9 @@ namespace TaskList.UnitTests.Data.Models
                 GroupId = 1
             };
 
-            var result = _mapperConfig.CreateMapper().Map<UserTaskDetailsViewModel>(userTaskEntity);
+            var result = _mapperConfig.CreateMapper().Map<UserTaskViewModel>(userTaskEntity);
 
-            Assert.IsInstanceOf<UserTaskDetailsViewModel>(result);
+            Assert.IsInstanceOf<UserTaskViewModel>(result);
             Assert.AreEqual(expected.Name, result.Name);
             Assert.AreEqual(expected.UserId, result.UserId);
             Assert.AreEqual(expected.Id, result.Id);
@@ -63,7 +63,7 @@ namespace TaskList.UnitTests.Data.Models
         [Test]
         public void Mapper_ShouldCorrectlyMap_UserTaskViewModelToUserTaskEntity()
         {
-            var userTaskViewModel = new UserTaskDetailsViewModel
+            var userTaskViewModel = new UserTaskViewModel
             {
                 Id = 1,
                 Name = "TestTask",
@@ -105,7 +105,7 @@ namespace TaskList.UnitTests.Data.Models
             {
                 Id = 1,
                 Name = "TestTaskGroup",
-                UserTasks = new[] { 1, 2 }
+                UserTasks = new List<UserTaskViewModel> { new UserTaskViewModel { Id = 1, Name = "TestTask1" }, new UserTaskViewModel { Id = 2, Name = "TestTask2" } }
             };
 
             var result = _mapperConfig.CreateMapper().Map<TaskGroupViewModel>(taskGroupEntity);
@@ -113,7 +113,7 @@ namespace TaskList.UnitTests.Data.Models
             Assert.IsInstanceOf<TaskGroupViewModel>(result);
             Assert.AreEqual(expected.Id, result.Id);
             Assert.AreEqual(expected.Name, result.Name);
-            CollectionAssert.AreEquivalent(expected.UserTasks, result.UserTasks);
+            Assert.That(result.UserTasks, Is.EquivalentTo(expected.UserTasks));
         }
 
         [Test]

@@ -18,10 +18,10 @@ namespace TaskList.API
         }
 
         [HttpGet]
-        public ActionResult<List<UserTaskDetailsViewModel>> Get() => _userTaskDbManager.Get();
+        public ActionResult<List<UserTaskViewModel>> Get() => _userTaskDbManager.Get();
 
         [HttpGet("{id}")]
-        public ActionResult<UserTaskDetailsViewModel> Get(int id)
+        public ActionResult<UserTaskViewModel> Get(int id)
         {
             var task = _userTaskDbManager.Get(id);
             if (task == null)
@@ -30,7 +30,7 @@ namespace TaskList.API
         }
 
         [HttpPost]
-        public ActionResult<UserTaskDetailsViewModel> Create(UserTaskDetailsViewModel taskDetailsViewModel)
+        public ActionResult<UserTaskViewModel> Create(UserTaskViewModel taskDetailsViewModel)
         {
             var newTaskId = _userTaskDbManager.Create(taskDetailsViewModel);
             taskDetailsViewModel.Id = newTaskId;
@@ -38,7 +38,7 @@ namespace TaskList.API
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, UserTaskDetailsViewModel taskDetailsViewModel)
+        public IActionResult Update(int id, UserTaskViewModel taskDetailsViewModel)
         {
             if (_userTaskDbManager.Update(id, taskDetailsViewModel))
                 return NoContent();
@@ -54,7 +54,7 @@ namespace TaskList.API
         }
 
         [HttpGet("group/{groupId}")]
-        public ActionResult<List<UserTaskDetailsViewModel>> GetAllTaskInGroup(int groupId)
+        public ActionResult<List<UserTaskViewModel>> GetAllTaskInGroup(int groupId)
         {
             var tasks = _userTaskDbManager.Get()?.Where(t => t.GroupId == groupId);
             if (tasks == null)

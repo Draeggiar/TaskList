@@ -9,7 +9,7 @@ namespace TaskList.Data.Models.DbEntities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Deadline { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public int TaskStatus { get; set; }
 
         public int GroupId { get; set; }

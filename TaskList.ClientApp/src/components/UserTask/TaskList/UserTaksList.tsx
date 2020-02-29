@@ -1,36 +1,26 @@
-import React, { useEffect } from 'react'
-import { Link, match } from 'react-router-dom'
-import { SimpleTask } from '../../../modules/UserTask/types'
-import { Dictionary } from '../../../utils/Dictionary'
-import Spinner from '../../SharedComponents/Spinner'
+import React from 'react'
+import { UserTask } from '../../../modules/TaskGroup/types'
 
 import './UserTaskList.scss'
 
 type Props = {
-  userTasks: Dictionary<SimpleTask>
-  match: match
-  isLoading: boolean
-  requestTasksInGroup: (groupId: number) => void
-  groupId: number
-  areTaskLoaded: boolean
+  userTasks: UserTask[] | null
 }
 
-const UserTaskList = ({ userTasks, match, isLoading, requestTasksInGroup, groupId, areTaskLoaded }: Props) => {
-  useEffect(() => {
-    if (!isLoading && !areTaskLoaded) requestTasksInGroup(groupId)
-  })
-
+const UserTaskList = ({ userTasks }: Props) => {
   return (
-    <Spinner isLoading={isLoading}>
-      <div className="task-list">
-        {Object.entries(userTasks).map(([key, task]) => (
-          <Link className="task-list__task-tile" key={key} to={`${match.url}/userTask/${task.id}`}>
-            {task.name}
-          </Link>
-          //TODO remove
-        ))}
-      </div>
-    </Spinner>
+    <div className="task-list">
+      {userTasks
+        ? userTasks.map((task, index) => (
+            <div key={index} className="task-list__task-tile">
+              <>
+                {task.name}
+                <button>//TODO remove</button>
+              </>
+            </div>
+          ))
+        : null}
+    </div>
   )
 }
 

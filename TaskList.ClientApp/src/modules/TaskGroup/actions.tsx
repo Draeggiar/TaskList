@@ -6,10 +6,20 @@ import {
   TASK_GROUP_LOAD_ALL_COMPLETED,
   TASK_GROUP_LOAD_ALL_STARTED,
   TASK_GROUP_SAVE_COMPLETED,
+  TASK_GROUP_ADD_NEW_TASK,
+  UserTask,
+  TASK_GROUP_CREATE,
+  TASK_GROUP_CLEAR_UNSAVED,
 } from './types'
 import { navigateToGroup } from '../../utils/Navigator'
 
-const loadAllGroups = (): TaskGroupActionTypes => {
+export const createGroup = (): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_CREATE,
+  }
+}
+
+const loadAllGroupsStarted = (): TaskGroupActionTypes => {
   return {
     type: TASK_GROUP_LOAD_ALL_STARTED,
   }
@@ -29,15 +39,26 @@ const saveGroupCompleted = (taskGroup: TaskGroup): TaskGroupActionTypes => {
   }
 }
 
+export const addNewTask = (userTask: UserTask): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_ADD_NEW_TASK,
+    payload: userTask,
+  }
+}
+
+export const clearUnsavedGroups = () : TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_CLEAR_UNSAVED
+  }
+}
+
 export const requestTaskGroups = (): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
   const state = getState()
-  if (!state.groups.isLoading && !state.groups.isLoaded) {
-    dispatch(loadAllGroups())
-    fetch('api/taskgroup')
-      .then(response => response.json() as Promise<TaskGroup[]>)
-      .then(data => {
-        dispatch(groupsLoadingCompleted(data))
-      })
+  if (!state.groups.areLoading && !state.groups.areLoaded) {
+    dispatch(loadAllGroupsStarted())
+    Axios.get('api/taskgroup').then(response => {
+      dispatch(groupsLoadingCompleted(response.data))
+    })
   }
 }
 

@@ -16,6 +16,6 @@ namespace TaskList.Data.Models.DbEntities
         public string Name { get; set; }
 
         [InverseProperty("Group")]
-        public virtual ICollection<UserTaskEntity> UserTasks { get; set; }
+        public ICollection<UserTaskEntity> UserTasks { get; set; }
     }
 }

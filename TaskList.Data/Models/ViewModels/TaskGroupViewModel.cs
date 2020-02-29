@@ -6,6 +6,6 @@ namespace TaskList.Data.Models.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<int> UserTasks { get; set; }
+        public IEnumerable<UserTaskViewModel> UserTasks { get; set; }
     }
 }

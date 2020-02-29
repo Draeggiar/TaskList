@@ -32,6 +32,7 @@ namespace TaskList.UnitTests
                     TaskStatus = 0,
                     UserId = 1,
                 });
+                context.SaveChanges();
             }
 
             using (var context = new TasksDbContext(options))
@@ -43,6 +44,8 @@ namespace TaskList.UnitTests
                 Assert.That(taskFromDb.Deadline, Is.EqualTo(expected.Deadline));
                 Assert.That(taskFromDb.TaskStatus, Is.EqualTo(expected.TaskStatus));
                 Assert.That(taskFromDb.UserId, Is.EqualTo(expected.UserId));
+
+                context.Database.EnsureDeleted();
             }
         }
 
@@ -60,6 +63,7 @@ namespace TaskList.UnitTests
             using (var context = new TasksDbContext(options))
             {
                 context.TaskGroups.Add(expected);
+                context.SaveChanges();
             }
 
             using (var context = new TasksDbContext(options))
@@ -68,6 +72,8 @@ namespace TaskList.UnitTests
                 var groupFromDb = context.TaskGroups.First();
                 Assert.That(groupFromDb.Id, Is.Not.EqualTo(0));
                 Assert.That(groupFromDb.Name, Is.EqualTo(expected.Name));
+
+                context.Database.EnsureDeleted();
             }
         }
     }

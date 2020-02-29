@@ -13,7 +13,7 @@ type Props = {
 
 const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
   const [name, setName] = useState('')
-  const [deadline, setDeadline] = useState(new Date().toString())
+  const [deadline, setDeadline] = useState(moment().format(moment.HTML5_FMT.DATE))
   const [taskStatus, setTaskStatus] = useState(0)
 
   return (
@@ -45,7 +45,7 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
             name,
             deadline,
             taskStatus,
-            userId: null,
+            user: null,
             groupId: groupId,
           })
         }

@@ -10,6 +10,7 @@ namespace TaskList.Data.Models
         {
             CreateMap<UserTaskEntity, UserTaskViewModel>().ReverseMap();
             CreateMap<TaskGroupEntity, TaskGroupViewModel>().ReverseMap();
+            CreateMap<UserEntity, UserViewModel>().ReverseMap();
         }
     }
 }

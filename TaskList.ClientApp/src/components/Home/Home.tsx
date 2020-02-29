@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { TaskGroup } from '../../modules/TaskGroup/types'
-import TaskGroupTile from '../TaskGroup/Tile/TakGroupTile'
+import TaskGroupTile from '../TaskGroup/GroupTile/TakGroupTile'
 import Spinner from '../SharedComponents/Spinner'
 
 import './Home.scss'
@@ -12,10 +12,9 @@ type Props = {
   areGroupsLoaded: boolean
   taskGroups: TaskGroup[]
   requestTaskGroups: () => void
-  createGroup: () => void
 }
 
-const Home = ({ areGroupsLoading, areGroupsLoaded, taskGroups, requestTaskGroups, createGroup }: Props) => {
+const Home = ({ areGroupsLoading, areGroupsLoaded, taskGroups, requestTaskGroups }: Props) => {
   useEffect(() => {
     if (!areGroupsLoaded) requestTaskGroups()
   })
@@ -32,7 +31,7 @@ const Home = ({ areGroupsLoading, areGroupsLoaded, taskGroups, requestTaskGroups
                 ))
               : null}
           </div>
-          <Link className="home__content__add-new-button" to={`taskGroup/${0}`} onClick={createGroup}>
+          <Link className="home__content__add-new-button" to={`taskGroup/${0}`}>
             <FontAwesomeIcon icon="plus-circle" size="3x" />
           </Link>
         </div>

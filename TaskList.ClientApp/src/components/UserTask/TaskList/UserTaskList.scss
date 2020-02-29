@@ -1,20 +1,7 @@
 .task-list {
     display: flex;
     flex-direction: column;
-
-    &__task-tile {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: 50px;
-        margin-top: 10px;
-        background-color: wheat;
-        border: 1px solid black;
-
-        &:hover {
-            color: unset;
-            text-decoration: none;
-        }
-    }
+    overflow: auto;
+    max-height: 87vh;
+    width: 100%;
 }

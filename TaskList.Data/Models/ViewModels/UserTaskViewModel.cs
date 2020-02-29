@@ -4,10 +4,10 @@ namespace TaskList.Data.Models.ViewModels
 {
     public class UserTaskViewModel : IEquatable<UserTaskViewModel>
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public DateTime Deadline { get; set; }
-        public int? UserId { get; set; }
+        public UserViewModel User { get; set; }
         public int TaskStatus { get; set; }
         public int GroupId { get; set; }
 
@@ -18,7 +18,7 @@ namespace TaskList.Data.Models.ViewModels
             return Id == other.Id
                    && Name == other.Name
                    && Deadline.Equals(other.Deadline)
-                   && UserId == other.UserId
+                   && User == other.User
                    && TaskStatus == other.TaskStatus
                    && GroupId == other.GroupId;
         }

@@ -59,8 +59,14 @@ export interface TaskGroup {
 export interface UserTask {
   id: number | null
   name: string
-  deadline: string | Date
-  userId: number | null
+  deadline: string
+  user: User | null
   taskStatus: number
   groupId: number
+}
+
+interface User {
+  id: number | null
+  firstName: string
+  lastName: string
 }

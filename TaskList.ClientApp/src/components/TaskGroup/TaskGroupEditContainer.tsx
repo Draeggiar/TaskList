@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import TaskGroupEdit from './TaskGroupEdit'
 import { ApplicationState } from '../../store/store'
-import { requestTaskGroups, saveTaskGroup, clearUnsavedGroups } from '../../modules/TaskGroup/actions'
+import { requestTaskGroups, saveTaskGroup, clearUnsavedGroups, createGroup } from '../../modules/TaskGroup/actions'
 
 type OwnProps = RouteComponentProps<{ groupId: string }>
 
@@ -18,5 +18,6 @@ export default connect(
     requestTaskGroups,
     saveTaskGroup,
     clearUnsavedGroups,
+    createGroup,
   }
 )(TaskGroupEdit)

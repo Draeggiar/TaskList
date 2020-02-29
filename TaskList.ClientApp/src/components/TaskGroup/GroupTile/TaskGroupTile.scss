@@ -12,6 +12,14 @@
     background-color: wheat;
     cursor: pointer;
 
+    &__remove-group-button {
+        align-self: flex-end;
+
+        &:hover {
+            color: red;
+        }
+    }
+
     &__task-count {
         font-weight: bold;
     }

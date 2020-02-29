@@ -37,7 +37,7 @@ namespace TaskList.UnitTests.Data.Models
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = 1,
-                UserId = 1,
+                UserId = null,
                 GroupId = 1
             };
             var expected = new UserTaskViewModel
@@ -46,18 +46,18 @@ namespace TaskList.UnitTests.Data.Models
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = 1,
-                UserId = 1,
+                User = null,
                 GroupId = 1
             };
 
             var result = _mapperConfig.CreateMapper().Map<UserTaskViewModel>(userTaskEntity);
 
-            Assert.IsInstanceOf<UserTaskViewModel>(result);
-            Assert.AreEqual(expected.Name, result.Name);
-            Assert.AreEqual(expected.UserId, result.UserId);
-            Assert.AreEqual(expected.Id, result.Id);
-            Assert.AreEqual(expected.TaskStatus, result.TaskStatus);
-            Assert.AreEqual(expected.Deadline, result.Deadline);
+            Assert.That(result, Is.InstanceOf<UserTaskViewModel>());
+            Assert.That(result.Id, Is.EqualTo(expected.Id));
+            Assert.That(result.Name, Is.EqualTo(expected.Name));
+            Assert.That(result.User, Is.EqualTo(expected.User));
+            Assert.That(result.TaskStatus, Is.EqualTo(result.TaskStatus));
+            Assert.That(result.Deadline, Is.EqualTo(expected.Deadline));
         }
 
         [Test]
@@ -68,7 +68,12 @@ namespace TaskList.UnitTests.Data.Models
                 Id = 1,
                 Name = "TestTask",
                 TaskStatus = 1,
-                UserId = 1,
+                User = new UserViewModel
+                {
+                    Id = 1,
+                    FirstName = "Name",
+                    LastName = "Surname"
+                },
                 Deadline = new DateTime(2003, 2, 1),
                 GroupId = 1
             };

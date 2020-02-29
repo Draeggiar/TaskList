@@ -13,6 +13,7 @@ type Props = {
   requestTaskGroups: () => void
   saveTaskGroup: (TaskGroup: TaskGroup) => void
   clearUnsavedGroups: () => void
+  createGroup: () => void
 }
 
 const TaskGroupEdit = ({
@@ -21,6 +22,7 @@ const TaskGroupEdit = ({
   requestTaskGroups,
   saveTaskGroup,
   clearUnsavedGroups,
+  createGroup,
 }: Props) => {
   const [groupName, setGroupName] = useState('')
 
@@ -31,7 +33,7 @@ const TaskGroupEdit = ({
   }, [areGroupsLoaded, requestTaskGroups])
 
   useEffect(() => {
-    if (selectedGroup) setGroupName(selectedGroup.name)
+    selectedGroup ? setGroupName(selectedGroup.name) : createGroup()
   }, [selectedGroup])
 
   useEffect(() => () => clearUnsavedGroups(), [])

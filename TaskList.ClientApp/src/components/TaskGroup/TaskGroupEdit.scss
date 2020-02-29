@@ -28,11 +28,11 @@
             flex-direction: column;
             align-items: center;
             height: 100%;
+            padding: 5px;
         }
 
         &__right-column {
             flex: 1 1 auto;
-            display: flex;
             padding: 5px;
         }
     }

@@ -1,4 +1,4 @@
-import { User } from "../User/types"
+import { User } from '../User/types'
 
 export const TASK_GROUP_CREATE = 'TASK_GROUP_CREATE'
 
@@ -10,6 +10,9 @@ export const TASK_GROUP_SAVE_COMPLETED = 'TASK_GROUP_SAVE_COMPLETED'
 export const TASK_GROUP_ADD_NEW_TASK = 'TASK_GROUP_ADD_NEW_TASK'
 
 export const TASK_GROUP_CLEAR_UNSAVED = 'TASK_GROUP_CLEAR_UNSAVED'
+
+export const TASK_GROUP_CHANGE_SORT_ORDER = 'TASK_GROUP_CHANGE_SORT_ORDER'
+export const TASK_GROUP_CHANGE_SORT_DIRECTION = 'TASK_GROUP_CHANGE_SORT_DIRECTION'
 
 interface AddNewGroupAction {
   type: typeof TASK_GROUP_CREATE
@@ -38,6 +41,16 @@ interface ClearUnsavedGroupsAction {
   type: typeof TASK_GROUP_CLEAR_UNSAVED
 }
 
+interface ChangeSortOrderAction {
+  type: typeof TASK_GROUP_CHANGE_SORT_ORDER
+  payload: GroupsSortOrder
+}
+
+interface ChangeSortDirectionAction {
+  type: typeof TASK_GROUP_CHANGE_SORT_DIRECTION
+  payload: GroupsSortDirection
+}
+
 export type TaskGroupActionTypes =
   | AddNewGroupAction
   | LoadAllStartedAction
@@ -45,11 +58,15 @@ export type TaskGroupActionTypes =
   | SaveGroupCompletedAction
   | AddNewTaskAction
   | ClearUnsavedGroupsAction
+  | ChangeSortOrderAction
+  | ChangeSortDirectionAction
 
 export interface TaskGroupsState {
   areLoading: boolean
   areLoaded: boolean
   taskGroups: TaskGroup[]
+  sortOrder: GroupsSortOrder
+  sortDirection: GroupsSortDirection
 }
 
 export interface TaskGroup {
@@ -65,4 +82,14 @@ export interface UserTask {
   user: User | null
   taskStatus: number
   groupId: number
+}
+
+export enum GroupsSortOrder {
+  Name,
+  TasksCount,
+}
+
+export enum GroupsSortDirection {
+  Ascending,
+  Descending,
 }

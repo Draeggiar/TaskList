@@ -3,6 +3,12 @@
         display: flex;
         flex-direction: column;
 
+        &__sort-select {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         &__groups {
             display: flex;
             flex-direction: row;

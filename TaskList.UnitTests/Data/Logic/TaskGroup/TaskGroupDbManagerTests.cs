@@ -59,7 +59,7 @@ namespace TaskList.UnitTests.Data.Logic.TaskGroup
         public void GetById_ShouldReturn_CorrectGroupFromDb()
         {
             var options = new DbContextOptionsBuilder<TasksDbContext>()
-                .UseInMemoryDatabase(databaseName: "Get_all_groups")
+                .UseInMemoryDatabase(databaseName: "Get_group_by_id")
                 .Options;
 
             using (var context = new TasksDbContext(options))
@@ -92,7 +92,7 @@ namespace TaskList.UnitTests.Data.Logic.TaskGroup
         public void Create_ShouldAdd_CorrectEntityToDb()
         {
             var options = new DbContextOptionsBuilder<TasksDbContext>()
-                .UseInMemoryDatabase(databaseName: "Get_all_groups")
+                .UseInMemoryDatabase(databaseName: "Get_create_group")
                 .Options;
 
             using (var context = new TasksDbContext(options))
@@ -113,6 +113,44 @@ namespace TaskList.UnitTests.Data.Logic.TaskGroup
                 var result = context.TaskGroups.Include(g => g.UserTasks).First();
                 Assert.That(result.Name, Is.EqualTo("TestGroup"));
                 Assert.That(result.UserTasks.Count, Is.EqualTo(2));
+                Assert.That(result.UserTasks.ToList().Exists(t => t.Name == "TestTask1" || t.Name == "TestTask2"), Is.True);
+            }
+        }
+
+        [Test]
+        public void Update_ShouldSet_CorrectValuesOnEntity()
+        {
+            var options = new DbContextOptionsBuilder<TasksDbContext>()
+                .UseInMemoryDatabase(databaseName: "Update_group")
+                .Options;
+
+            using (var context = new TasksDbContext(options))
+            {
+                context.TaskGroups.Add(new TaskGroupEntity
+                {
+                    Name = "TestGroup1",
+                    UserTasks = new List<UserTaskEntity> {new UserTaskEntity {Name = "TestTask"}}
+                });
+                context.SaveChanges();
+
+                var groupsDbManger = new TaskGroupDbManager(context, _mapper);
+                groupsDbManger.Update(1, new TaskGroupViewModel
+                {
+                    Id = 1,
+                    Name = "UpdatedGroup",
+                    UserTasks = new List<UserTaskViewModel>
+                        {new UserTaskViewModel {Name = "TestTask1"}, new UserTaskViewModel {Name = "TestTask2"}}
+                });
+            }
+
+            using (var context = new TasksDbContext(options))
+            {
+                Assert.That(context.TaskGroups.Count(), Is.EqualTo(1));
+                Assert.That(context.UserTasks.Count(), Is.EqualTo(2));
+
+                var result = context.TaskGroups.Include(g => g.UserTasks).First();
+                Assert.That(result.Id, Is.EqualTo(1));
+                Assert.That(result.Name, Is.EqualTo("UpdatedGroup"));
                 Assert.That(result.UserTasks.ToList().Exists(t => t.Name == "TestTask1" || t.Name == "TestTask2"), Is.True);
             }
         }

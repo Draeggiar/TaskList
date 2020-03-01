@@ -52,6 +52,22 @@ namespace TaskList.Data.Logic.TaskGroup
 
             var updatedGroup = _mapper.Map<TaskGroupEntity>(group);
             _dbContext.Entry(groupFromDb).CurrentValues.SetValues(updatedGroup);
+
+            foreach (var userTaskFromDb in groupFromDb.UserTasks.ToList())
+            {
+                var task = updatedGroup.UserTasks.SingleOrDefault(t => t.Id == userTaskFromDb.Id);
+                if (task == null)
+                    _dbContext.Remove(userTaskFromDb);
+                else
+                    _dbContext.Entry(userTaskFromDb).CurrentValues.SetValues(task);
+            }
+
+            foreach (var newUserTasks in updatedGroup.UserTasks
+                .Where(newUserTasks => newUserTasks.Id == 0 || groupFromDb.UserTasks.All(t => t.Id != newUserTasks.Id)))
+            {
+                groupFromDb.UserTasks.Add(newUserTasks);
+            }
+
             _dbContext.SaveChanges();
             return true;
         }

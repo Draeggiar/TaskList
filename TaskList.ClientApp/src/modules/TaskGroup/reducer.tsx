@@ -8,12 +8,18 @@ import {
   TASK_GROUP_ADD_NEW_TASK,
   TASK_GROUP_CREATE,
   TASK_GROUP_CLEAR_UNSAVED,
+  TASK_GROUP_CHANGE_SORT_DIRECTION,
+  GroupsSortOrder,
+  GroupsSortDirection,
+  TASK_GROUP_CHANGE_SORT_ORDER,
 } from './types'
 
 const initialState: TaskGroupsState = {
   areLoading: false,
   areLoaded: false,
   taskGroups: [],
+  sortOrder: GroupsSortOrder.Name,
+  sortDirection: GroupsSortDirection.Ascending,
 }
 
 const reducer: Reducer<TaskGroupsState> = (state = initialState, action: TaskGroupActionTypes) => {
@@ -23,13 +29,9 @@ const reducer: Reducer<TaskGroupsState> = (state = initialState, action: TaskGro
       newGroupsState.push({ id: 0, name: '', userTasks: [] })
       return { ...state, taskGroups: newGroupsState }
     case TASK_GROUP_LOAD_ALL_STARTED:
-      return Object.assign({}, state, { areLoading: true, areLoaded: false })
+      return { ...state, areLoading: true, areLoaded: false }
     case TASK_GROUP_LOAD_ALL_COMPLETED:
-      return {
-        areLoading: false,
-        areLoaded: true,
-        taskGroups: action.payload,
-      }
+      return { ...state, areLoading: false, areLoaded: true, taskGroups: action.payload }
     case TASK_GROUP_SAVE_COMPLETED: {
       const newGroupsState = [...state.taskGroups]
 
@@ -57,6 +59,10 @@ const reducer: Reducer<TaskGroupsState> = (state = initialState, action: TaskGro
       const newGroupsState = state.taskGroups.filter(g => g.id !== 0)
       return { ...state, taskGroups: newGroupsState }
     }
+    case TASK_GROUP_CHANGE_SORT_ORDER:
+      return { ...state, sortOrder: action.payload }
+    case TASK_GROUP_CHANGE_SORT_DIRECTION:
+      return { ...state, sortDirection: action.payload }
     default:
       return state
   }

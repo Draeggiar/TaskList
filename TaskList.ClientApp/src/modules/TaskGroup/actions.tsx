@@ -10,6 +10,10 @@ import {
   UserTask,
   TASK_GROUP_CREATE,
   TASK_GROUP_CLEAR_UNSAVED,
+  GroupsSortDirection,
+  TASK_GROUP_CHANGE_SORT_DIRECTION,
+  GroupsSortOrder,
+  TASK_GROUP_CHANGE_SORT_ORDER,
 } from './types'
 import { navigateToGroup } from '../../utils/Navigator'
 
@@ -46,9 +50,23 @@ export const addNewTask = (userTask: UserTask): TaskGroupActionTypes => {
   }
 }
 
-export const clearUnsavedGroups = () : TaskGroupActionTypes => {
+export const clearUnsavedGroups = (): TaskGroupActionTypes => {
   return {
-    type: TASK_GROUP_CLEAR_UNSAVED
+    type: TASK_GROUP_CLEAR_UNSAVED,
+  }
+}
+
+export const changeGroupsSortOrder = (newSortOrder: GroupsSortOrder): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_CHANGE_SORT_ORDER,
+    payload: newSortOrder,
+  }
+}
+
+export const changeGroupsSortDirection = (newSortDirection: GroupsSortDirection): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_CHANGE_SORT_DIRECTION,
+    payload: newSortDirection,
   }
 }
 

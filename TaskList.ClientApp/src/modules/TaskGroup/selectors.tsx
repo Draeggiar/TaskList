@@ -7,3 +7,7 @@ export const getAreGroupsLoading = (state: ApplicationState) => getGroupsState(s
 export const getAreGroupsLoaded = (state: ApplicationState) => getGroupsState(state)?.areLoaded
 
 export const getTaskGroups = (state: ApplicationState) => getGroupsState(state)?.taskGroups
+
+export const getGroupsSortOrder = (state: ApplicationState) => getGroupsState(state)?.sortOrder
+
+export const getGroupsSortDirection = (state: ApplicationState) => getGroupsState(state)?.sortDirection

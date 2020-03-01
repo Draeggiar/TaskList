@@ -2,7 +2,13 @@ import { connect } from 'react-redux'
 import { requestTaskGroups } from '../../modules/TaskGroup/actions'
 import { ApplicationState } from '../../store/store'
 import Home from './Home'
-import { getAreGroupsLoading, getAreGroupsLoaded, getTaskGroups } from '../../modules/TaskGroup/selectors'
+import {
+  getAreGroupsLoading,
+  getAreGroupsLoaded,
+  getTaskGroups,
+  getGroupsSortOrder,
+  getGroupsSortDirection,
+} from '../../modules/TaskGroup/selectors'
 
 export default connect(
   (state: ApplicationState) => {
@@ -10,6 +16,8 @@ export default connect(
       areGroupsLoading: getAreGroupsLoading(state),
       areGroupsLoaded: getAreGroupsLoaded(state),
       taskGroups: getTaskGroups(state),
+      sortOrder: getGroupsSortOrder(state),
+      sortDirection: getGroupsSortDirection(state),
     }
   },
   {

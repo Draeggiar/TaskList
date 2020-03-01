@@ -1,17 +1,29 @@
 import React from 'react'
 import { useHistory } from 'react-router'
-import { TaskGroup } from '../../../modules/TaskGroup/types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { UserTask } from '../../../modules/UserTask/types'
 
 import './TaskGroupTile.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-type Props = TaskGroup
+type Props = {
+  id: number
+  name: string
+  userTasks: UserTask[]
+  deleteTaskGroup: () => void
+}
 
-const TaskGroupTile = ({ id, name, userTasks }: Props) => {
+const TaskGroupTile = ({ id, name, userTasks, deleteTaskGroup }: Props) => {
   const history = useHistory()
+
   return (
     <div className="task-group-tile" onClick={() => history.push(`/taskGroup/${id}`)}>
-      <button className="task-group-tile__remove-group-button btn" onClick={e => {e.stopPropagation()}}>
+      <button
+        className="task-group-tile__remove-group-button btn"
+        onClick={e => {
+          deleteTaskGroup()
+          e.stopPropagation()
+        }}
+      >
         <FontAwesomeIcon icon="trash-alt" />
       </button>
       <span className="task-group-tile__name">{name}</span>

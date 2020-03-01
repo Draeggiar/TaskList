@@ -11,7 +11,6 @@ namespace TaskList.Data.Models.DbEntities
         public string Deadline { get; set; }
         public int TaskStatus { get; set; }
 
-
         public int? UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual UserEntity User { get; set; }

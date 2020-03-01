@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { TaskGroup, GroupsSortOrder, GroupsSortDirection } from '../../modules/TaskGroup/types'
 import TaskGroupTile from '../TaskGroup/GroupTile/TakGroupTile'
-import Spinner from '../SharedComponents/Spinner'
+import Spinner from '../SharedComponents/Spinner/Spinner'
 import TaskGroupSortSelect from '../TaskGroup/GroupSortSelect/TaskGroupSortSelectContainer'
 
 import './Home.scss'
@@ -15,6 +15,7 @@ type Props = {
   requestTaskGroups: () => void
   sortOrder: GroupsSortOrder
   sortDirection: GroupsSortDirection
+  deleteTaskGroup: (groupId: number) => void
 }
 
 const Home = ({
@@ -24,6 +25,7 @@ const Home = ({
   requestTaskGroups,
   sortOrder,
   sortDirection,
+  deleteTaskGroup,
 }: Props) => {
   const [sortedGroups, setSortedGroups] = useState(taskGroups)
 
@@ -54,7 +56,11 @@ const Home = ({
     <div className="home">
       <Spinner isLoading={areGroupsLoading}>
         <div className="home__content">
-          <TaskGroupSortSelect className="home__content__sort-select" selectedSortOrder={sortOrder} selectedSortDirection={sortDirection} />
+          <TaskGroupSortSelect
+            className="home__content__sort-select"
+            selectedSortOrder={sortOrder}
+            selectedSortDirection={sortDirection}
+          />
           <div className="home__content__groups">
             {taskGroups && taskGroups.length
               ? sortedGroups.map((group, index) => (
@@ -63,6 +69,7 @@ const Home = ({
                     id={group.id}
                     name={group.name}
                     userTasks={group.userTasks}
+                    deleteTaskGroup={() => deleteTaskGroup(group.id)}
                   />
                 ))
               : null}

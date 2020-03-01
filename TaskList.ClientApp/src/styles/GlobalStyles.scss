@@ -1,7 +1,8 @@
-a {
+a,
+.btn {
     color: black;
 
-    &:hover{
+    &:hover {
         color: gray
     }
 }

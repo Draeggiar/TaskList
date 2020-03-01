@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment'
 
-const DATE_TIME_FORMAT = 'D-MM-YYYY H:mm'
+const DATE_TIME_FORMAT = 'DD-MM-YYYY HH:mm'
 
 export const isoToFormatedDateTime = (value: string) => moment(value).format(DATE_TIME_FORMAT)
 

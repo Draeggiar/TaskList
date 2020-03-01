@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import DateTime from 'react-datetime'
 import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TaskStatusSelect from './TaskStatusSelect/TaskStatusSelect'
-import { UserTask } from '../../modules/TaskGroup/types'
-import { isoToFormatedDateTime, formatedDateTimeToIso } from '../../utils/DateTimeFormatter'
+import { UserTask } from '../../modules/UserTask/types'
+import DateTimePicker from '../SharedComponents/DateTimePicker/DateTimePicker'
 import UserSelect from '../User/UserSelectContainer'
 import { User } from '../../modules/User/types'
 
@@ -28,10 +28,7 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
       </span>
       <span>
         <label>Deadline:</label>
-        <DateTime
-          value={isoToFormatedDateTime(deadline)}
-          onChange={value => setDeadline(formatedDateTimeToIso(value))}
-        />
+        <DateTimePicker value={deadline} onChange={setDeadline} />
       </span>
       <span>
         <label>User:</label>
@@ -42,6 +39,7 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
         <TaskStatusSelect taskStatus={taskStatus} onChange={setTaskStatus} />
       </span>
       <button
+        className="btn"
         onClick={() =>
           addNewTask({
             id: null,
@@ -53,7 +51,7 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
           })
         }
       >
-        Add task
+        <FontAwesomeIcon icon="plus-circle" size="2x" />
       </button>
     </div>
   )

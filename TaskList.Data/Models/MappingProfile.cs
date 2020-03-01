@@ -8,9 +8,11 @@ namespace TaskList.Data.Models
     {
         public MappingProfile()
         {
-            CreateMap<UserTaskEntity, UserTaskViewModel>().ReverseMap();
+            CreateMap<UserTaskEntity, UserTaskViewModel>()
+                .ReverseMap()
+                .ForMember(dest => dest.User, opt => opt.Ignore());
             CreateMap<TaskGroupEntity, TaskGroupViewModel>().ReverseMap();
-            CreateMap<UserEntity, UserViewModel>().ReverseMap();
+            CreateMap<UserEntity, UserViewModel>();
         }
     }
 }

@@ -5,8 +5,19 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    background-color: wheat;
     border: 1px solid black;
+
+    &.--new {
+        background-color: seagreen;
+    }
+
+    &.--in-progress {
+        background-color: wheat;
+    }
+
+    &.--completed {
+        background-color: indianred;
+    }
 
     &:first-child {
         margin-top: 0;

@@ -1,20 +1,24 @@
 import React from 'react'
-import _isEqual from 'lodash/isEqual'
-import { UserTask } from '../../../modules/TaskGroup/types'
+import { UserTask } from '../../../modules/UserTask/types'
 import UserTaskTile from '../TaskTile/UserTaskTile'
 
 import './UserTaskList.scss'
 
 type Props = {
   userTasks: UserTask[] | null
+  deleteUserTask: (task: UserTask) => void
 }
 
-const UserTaskList = ({ userTasks }: Props) => {
+const UserTaskList = ({ userTasks, deleteUserTask }: Props) => {
   return (
     <div className="task-list">
-      {userTasks ? userTasks.map((task, index) => <UserTaskTile key={index} userTask={task} />) : null}
+      {userTasks
+        ? userTasks.map((task, index) => (
+            <UserTaskTile key={index} userTask={task} deleteUserTask={() => deleteUserTask(task)} />
+          ))
+        : null}
     </div>
   )
 }
 
-export default React.memo(UserTaskList, (prevProps, nextProps) => !_isEqual(prevProps.userTasks, nextProps.userTasks))
+export default UserTaskList

@@ -114,6 +114,8 @@ namespace TaskList.UnitTests.Data.Logic.TaskGroup
                 Assert.That(result.Name, Is.EqualTo("TestGroup"));
                 Assert.That(result.UserTasks.Count, Is.EqualTo(2));
                 Assert.That(result.UserTasks.ToList().Exists(t => t.Name == "TestTask1" || t.Name == "TestTask2"), Is.True);
+
+                context.Database.EnsureDeleted();
             }
         }
 
@@ -152,6 +154,37 @@ namespace TaskList.UnitTests.Data.Logic.TaskGroup
                 Assert.That(result.Id, Is.EqualTo(1));
                 Assert.That(result.Name, Is.EqualTo("UpdatedGroup"));
                 Assert.That(result.UserTasks.ToList().Exists(t => t.Name == "TestTask1" || t.Name == "TestTask2"), Is.True);
+
+                context.Database.EnsureDeleted();
+            }
+        }
+
+        [Test]
+        public void Delete_ShouldRemove_EntityFromDb()
+        {
+            var options = new DbContextOptionsBuilder<TasksDbContext>()
+                .UseInMemoryDatabase(databaseName: "Get_all_groups")
+                .Options;
+
+            using (var context = new TasksDbContext(options))
+            {
+                context.TaskGroups.AddRange(new TaskGroupEntity
+                {
+                    Name = "TestGroup1",
+                    UserTasks = new List<UserTaskEntity> { new UserTaskEntity { Name = "TestTask" } }
+                });
+                context.SaveChanges();
+
+                var groupsDbManger = new TaskGroupDbManager(context, _mapper);
+                groupsDbManger.Remove(1);
+            }
+
+            using (var context = new TasksDbContext(options))
+            {
+                Assert.That(context.TaskGroups.Count(), Is.EqualTo(0));
+                Assert.That(context.UserTasks.Count(), Is.EqualTo(0));
+
+                context.Database.EnsureDeleted();
             }
         }
     }

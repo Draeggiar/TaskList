@@ -6,14 +6,13 @@ import {
   TASK_GROUP_LOAD_ALL_COMPLETED,
   TASK_GROUP_LOAD_ALL_STARTED,
   TASK_GROUP_SAVE_COMPLETED,
-  TASK_GROUP_ADD_NEW_TASK,
-  UserTask,
   TASK_GROUP_CREATE,
   TASK_GROUP_CLEAR_UNSAVED,
   GroupsSortDirection,
   TASK_GROUP_CHANGE_SORT_DIRECTION,
   GroupsSortOrder,
   TASK_GROUP_CHANGE_SORT_ORDER,
+  TASK_GROUP_DELETE_COMPLETED,
 } from './types'
 import { navigateToGroup } from '../../utils/Navigator'
 
@@ -43,13 +42,6 @@ const saveGroupCompleted = (taskGroup: TaskGroup): TaskGroupActionTypes => {
   }
 }
 
-export const addNewTask = (userTask: UserTask): TaskGroupActionTypes => {
-  return {
-    type: TASK_GROUP_ADD_NEW_TASK,
-    payload: userTask,
-  }
-}
-
 export const clearUnsavedGroups = (): TaskGroupActionTypes => {
   return {
     type: TASK_GROUP_CLEAR_UNSAVED,
@@ -67,6 +59,13 @@ export const changeGroupsSortDirection = (newSortDirection: GroupsSortDirection)
   return {
     type: TASK_GROUP_CHANGE_SORT_DIRECTION,
     payload: newSortDirection,
+  }
+}
+
+const deleteGroupCompleted = (groupId: number): TaskGroupActionTypes => {
+  return {
+    type: TASK_GROUP_DELETE_COMPLETED,
+    payload: groupId,
   }
 }
 
@@ -89,4 +88,8 @@ export const saveTaskGroup = (taskGroup: TaskGroup): AppThunkAction<TaskGroupAct
     : Axios.put<TaskGroup>(`api/taskgroup/${taskGroup.id}`, taskGroup).then(() =>
         dispatch(saveGroupCompleted(taskGroup))
       )
+}
+
+export const deleteTaskGroup = (groupId: number): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
+  return Axios.delete(`api/taskgroup/${groupId}`).then(() => dispatch(deleteGroupCompleted(groupId)))
 }

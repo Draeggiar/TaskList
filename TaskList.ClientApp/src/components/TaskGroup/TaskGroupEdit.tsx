@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { TaskGroup } from '../../modules/TaskGroup/types'
 import UserTaskList from '../UserTask/TaskList/UserTaksList'
-import UserTaskEdit from '../UserTask/UserTaskEditContainer'
+import UserTaskEdit from '../UserTask/UserTaskEdit'
 
 import './TaskGroupEdit.scss'
+import { UserTask } from '../../modules/UserTask/types'
 
 type Props = {
   selectedGroup: TaskGroup | null | undefined
@@ -14,6 +15,8 @@ type Props = {
   saveTaskGroup: (TaskGroup: TaskGroup) => void
   clearUnsavedGroups: () => void
   createGroup: () => void
+  deleteUserTask: (task: UserTask) => void
+  addNewTask: (taskDetails: UserTask) => void
 }
 
 const TaskGroupEdit = ({
@@ -23,12 +26,14 @@ const TaskGroupEdit = ({
   saveTaskGroup,
   clearUnsavedGroups,
   createGroup,
+  deleteUserTask,
+  addNewTask,
 }: Props) => {
   const [groupName, setGroupName] = useState('')
 
   useEffect(() => {
     if (!areGroupsLoaded) {
-      requestTaskGroups() //TODO zamienić na pojedynczą grupę
+      requestTaskGroups()
     } else {
       selectedGroup ? setGroupName(selectedGroup.name) : createGroup()
     }
@@ -50,7 +55,7 @@ const TaskGroupEdit = ({
           onChange={e => setGroupName(e.target.value)}
         />
         <button
-          className="task-group-edit__header_save-button btn"
+          className="task-group-edit__header__save-button btn"
           onClick={() =>
             saveTaskGroup({
               id: selectedGroup.id,
@@ -64,10 +69,10 @@ const TaskGroupEdit = ({
       </span>
       <div className="task-group-edit__content">
         <div className="task-group-edit__content__left-column">
-          <UserTaskList userTasks={selectedGroup.userTasks} />
+          <UserTaskList userTasks={selectedGroup.userTasks} deleteUserTask={deleteUserTask} />
         </div>
         <div className="task-group-edit__content__right-column">
-          <UserTaskEdit groupId={selectedGroup.id} />
+          <UserTaskEdit groupId={selectedGroup.id} addNewTask={addNewTask} />
         </div>
       </div>
     </div>

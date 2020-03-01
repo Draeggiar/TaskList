@@ -14,5 +14,11 @@
             flex: 0 0 8%;
             margin: 5px 5px 5px 0;
         }
+
+        >select,
+        input,
+        div.date-time-picker {
+            flex: 0 0 20%
+        }
     }
 }

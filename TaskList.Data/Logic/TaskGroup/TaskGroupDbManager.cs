@@ -18,6 +18,8 @@ namespace TaskList.Data.Logic.TaskGroup
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+            _dbContext.Database.EnsureCreated();
         }
 
         public List<TaskGroupViewModel> Get()

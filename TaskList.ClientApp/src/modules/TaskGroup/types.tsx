@@ -1,3 +1,5 @@
+import { User } from "../User/types"
+
 export const TASK_GROUP_CREATE = 'TASK_GROUP_CREATE'
 
 export const TASK_GROUP_LOAD_ALL_STARTED = 'TASK_GROUP_LOAD_ALL_STARTED'
@@ -63,10 +65,4 @@ export interface UserTask {
   user: User | null
   taskStatus: number
   groupId: number
-}
-
-interface User {
-  id: number | null
-  firstName: string
-  lastName: string
 }

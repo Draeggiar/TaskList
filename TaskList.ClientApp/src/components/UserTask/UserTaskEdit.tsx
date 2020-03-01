@@ -3,6 +3,9 @@ import DateTime from 'react-datetime'
 import moment from 'moment'
 import TaskStatusSelect from './TaskStatusSelect/TaskStatusSelect'
 import { UserTask } from '../../modules/TaskGroup/types'
+import { isoToFormatedDateTime, formatedDateTimeToIso } from '../../utils/DateTimeFormatter'
+import UserSelect from '../User/UserSelectContainer'
+import { User } from '../../modules/User/types'
 
 import './UserTaskEdit.scss'
 
@@ -13,8 +16,9 @@ type Props = {
 
 const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
   const [name, setName] = useState('')
-  const [deadline, setDeadline] = useState(moment().format(moment.HTML5_FMT.DATE))
+  const [deadline, setDeadline] = useState(moment().format())
   const [taskStatus, setTaskStatus] = useState(0)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   return (
     <div className="user-task-edit">
@@ -25,14 +29,13 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
       <span>
         <label>Deadline:</label>
         <DateTime
-          timeFormat={false}
-          value={moment(deadline).format(moment.HTML5_FMT.DATE)}
-          onChange={value => setDeadline(moment(value).format(moment.HTML5_FMT.DATE))}
+          value={isoToFormatedDateTime(deadline)}
+          onChange={value => setDeadline(formatedDateTimeToIso(value))}
         />
       </span>
       <span>
         <label>User:</label>
-        //TODO User select
+        <UserSelect selectedUser={selectedUser} onChange={setSelectedUser} />
       </span>
       <span>
         <label>Status:</label>
@@ -45,7 +48,7 @@ const UserTaskEdit = ({ addNewTask, groupId }: Props) => {
             name,
             deadline,
             taskStatus,
-            user: null,
+            user: selectedUser,
             groupId: groupId,
           })
         }

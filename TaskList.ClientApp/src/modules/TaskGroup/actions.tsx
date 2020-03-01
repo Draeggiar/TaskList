@@ -56,14 +56,14 @@ export const requestTaskGroups = (): AppThunkAction<TaskGroupActionTypes> => (di
   const state = getState()
   if (!state.groups.areLoading && !state.groups.areLoaded) {
     dispatch(loadAllGroupsStarted())
-    Axios.get('api/taskgroup').then(response => {
+    return Axios.get('api/taskgroup').then(response => {
       dispatch(groupsLoadingCompleted(response.data))
     })
   }
 }
 
 export const saveTaskGroup = (taskGroup: TaskGroup): AppThunkAction<TaskGroupActionTypes> => (dispatch, getState) => {
-  taskGroup.id === 0
+  return taskGroup.id === 0
     ? Axios.post<TaskGroup>('api/taskgroup', taskGroup).then(response => {
         dispatch(saveGroupCompleted(response.data))
         navigateToGroup(response.data.id)

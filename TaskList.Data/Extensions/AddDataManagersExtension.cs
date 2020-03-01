@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TaskList.Data.Logic.TaskGroup;
+using TaskList.Data.Logic.User;
 using TaskList.Data.Logic.UserTask;
 
 namespace TaskList.Data.Extensions
@@ -10,6 +11,7 @@ namespace TaskList.Data.Extensions
         {
             services.AddScoped<IUserTaskDbManager, UserTaskDbManager>();
             services.AddScoped<ITaskGroupDbManager, TaskGroupDbManager>();
+            services.AddScoped<IUserDbManager, UserDbManager>();
         }
     }
 }

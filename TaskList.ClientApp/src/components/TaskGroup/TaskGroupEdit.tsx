@@ -29,14 +29,13 @@ const TaskGroupEdit = ({
   useEffect(() => {
     if (!areGroupsLoaded) {
       requestTaskGroups() //TODO zamienić na pojedynczą grupę
+    } else {
+      selectedGroup ? setGroupName(selectedGroup.name) : createGroup()
     }
+    // eslint-disable-next-line
   }, [areGroupsLoaded, requestTaskGroups])
 
-  useEffect(() => {
-    selectedGroup ? setGroupName(selectedGroup.name) : createGroup()
-  }, [selectedGroup])
-
-  useEffect(() => () => clearUnsavedGroups(), [])
+  useEffect(() => () => clearUnsavedGroups(), [clearUnsavedGroups])
 
   return selectedGroup ? (
     <div className="task-group-edit">

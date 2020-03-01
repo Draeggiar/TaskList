@@ -16,7 +16,7 @@ const initialState: TaskGroupsState = {
   taskGroups: [],
 }
 
-const reducer: Reducer<TaskGroupsState> = (state: TaskGroupsState = initialState, action: TaskGroupActionTypes) => {
+const reducer: Reducer<TaskGroupsState> = (state = initialState, action: TaskGroupActionTypes) => {
   switch (action.type) {
     case TASK_GROUP_CREATE:
       const newGroupsState = state.taskGroups

@@ -1,7 +1,9 @@
 import React from 'react'
-import moment from 'moment'
+import _find from 'lodash/find'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UserTask } from '../../../modules/TaskGroup/types'
+import { isoToFormatedDateTime } from '../../../utils/DateTimeFormatter'
+import { TaskStatus } from '../TaskStatusSelect/TaskStatusSelect'
 
 import './UserTask.scss'
 
@@ -10,15 +12,20 @@ type Props = {
 }
 
 const UserTaskTile = ({ userTask }: Props) => {
+  const matchStatusWithName = () => {
+    const status = Object.entries(TaskStatus).find(keyValue => keyValue[0] === userTask.taskStatus.toString())
+    return status ? status[1] : null
+  }
+
   return (
     <div className="task-tile">
       <button className="task-tile__remove-task-button btn">
         <FontAwesomeIcon icon="trash-alt" />
       </button>
       <span>{userTask.name}</span>
-      <span>{moment(userTask.deadline).format(moment.HTML5_FMT.DATE)}</span>
-      <span>{userTask.taskStatus}</span>
-      <span>{userTask.user}</span>
+      <span>{isoToFormatedDateTime(userTask.deadline)}</span>
+      <span>{matchStatusWithName()}</span>
+      {userTask.user ? <span>{`${userTask.user?.firstName} ${userTask.user?.lastName}`}</span> : null}
     </div>
   )
 }
